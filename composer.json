@@ -1,0 +1,38 @@
+{
+	"name": "iteam-pro/passengers",
+	"description": "CakePHP Users management plugin",
+	"homepage": "http://iteam-pro.com",
+	"keywords": ["cakephp", "ui"],
+	"type": "cakephp-plugin",
+	"license": "MIT",
+	"authors": [
+		{
+			"name": "iTeam s.r.o.",
+			"homepage": "https://iteam-pro.com"
+		}
+	],
+	"support": {
+		"issues": "https://github.com/iteam-pro/passengers/issues",
+		"source": "https://github.com/iteam-pro/passengers"
+	},
+	"minimum-stability": "dev",
+	"require": {
+		"cakephp/cakephp": "~3.0",
+		"iteam-pro/rear_engine": "dev-master",
+		"cakephp/acl": "dev-master"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "*"
+	},
+	"autoload": {
+		"psr-4": {
+			"Passengers\\": "src"
+		}
+	},
+	"autoload-dev": {
+		"psr-4": {
+			"Passengers\\Test\\": "tests"
+		}
+	}
+
+}
