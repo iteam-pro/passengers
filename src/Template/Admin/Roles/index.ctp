@@ -19,10 +19,10 @@
 		<td><?= $role->admin ? $this->Html->icon('', ['class' => 'fa-check']) : $this->Html->icon('', ['class' => 'fa-times']); ?>&nbsp;</td>
 		<td><?= $role->core ? $this->Html->icon('', ['class' => 'fa-check']) : $this->Html->icon('', ['class' => 'fa-times']); ?>&nbsp;</td>
 		<td class="actions">
-			<?= $this->Html->link(__('View'), ['action' => 'view', $role->id], ['class' => 'btn btn-primary', 'icon' => 'fa-eye']); ?>
-			<?= $this->Html->link(__('Edit'), ['action' => 'edit', $role->id], ['class' => 'btn btn-warning', 'icon' => 'fa-edit']); ?>
+			<?= $this->Html->link(__('View'), ['action' => 'view', $role->id], ['class' => 'btn btn-sm btn-primary', 'icon' => 'fa-eye']); ?>
+			<?= $this->Html->link(__('Edit'), ['action' => 'edit', $role->id], ['class' => 'btn btn-sm btn-warning', 'icon' => 'fa-edit']); ?>
 			<?php if(!$role->core): ?>
-				<?= $this->Html->link(__('Delete'), ['action' => 'delete', $role->id], ['title' => __('Are you sure you want to delete # {0}?', $role->id), 'class' => 'btn btn-danger btn-confirmation', 'icon' => 'fa-trash-o']); ?>
+				<?= $this->Html->link(__('Delete'), ['action' => 'delete', $role->id], ['title' => __('Are you sure you want to delete # {0}?', $role->id), 'class' => 'btn btn-sm btn-danger btn-confirmation', 'icon' => 'fa-trash-o']); ?>
 			<?php endif; ?>
 		</td>
 	</tr>
