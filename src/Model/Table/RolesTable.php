@@ -17,7 +17,7 @@ class RolesTable extends Table {
  * @return void
  */
 	public function initialize(array $config) {
-		$this->table('roles');
+		$this->table('passengers_roles');
 		$this->displayField('title');
 		$this->primaryKey('id');
 		$this->addBehavior('Timestamp');

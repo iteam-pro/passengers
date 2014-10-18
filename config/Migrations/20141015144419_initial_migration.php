@@ -80,7 +80,7 @@ class InitialMigration extends AbstractMigration
     public function up()
     {
 	    //Create roles table
-        $roles =  $this->table('roles');
+        $roles =  $this->table('passengers_roles');
 	    $roles->addColumn('title', 'string', ['limit' => 255])
 			->addColumn('slug', 'string', ['limit' => 255])
 		    ->addColumn('admin', 'boolean', ['null' => true])
@@ -88,11 +88,11 @@ class InitialMigration extends AbstractMigration
 		    ->addColumn('created', 'datetime', ['null' => true])
 		    ->addColumn('modified', 'datetime', ['null' => true])
 		    ->addColumn('user_count', 'integer', ['null' => true, 'default' => 0])
-		    ->addIndex(['slug'], array('unique' => true, 'name' => 'roles_slug_idx'))
+		    ->addIndex(['slug'], array('unique' => true, 'name' => 'passengers_roles_slug_idx'))
 			->save();
 
 	    //Create users table
-	    $users =  $this->table('users');
+	    $users =  $this->table('passengers_users');
 	    $users->addColumn('role_id', 'integer', ['default' => 2])
 			->addColumn('username', 'string', ['limit' => 60])
 			->addColumn('password', 'string', ['limit' => 60])
@@ -105,15 +105,18 @@ class InitialMigration extends AbstractMigration
 			->addColumn('profile', 'text', ['null' => true])
 			->addColumn('options', 'text', ['null' => true])
 		    //->addForeignKey('role_id', 'roles', 'id', ['delete'=> 'SET_NULL', 'update'=> 'NO_ACTION'])
-		    ->addIndex(['role_id'], array('unique' => false, 'name' => 'users_role_id_idx'))
+		    ->addIndex(['role_id'], array('unique' => false, 'name' => 'passengers_users_role_id_idx'))
 			->save();
 
 	    //Create sessions table
-	    $sessions =  $this->table('sessions',['id' => false, 'primary_key' => ['id']]);
-	    $sessions->addColumn('id', 'string', ['limit' => 40])
-		    ->addColumn('data', 'text', ['null' => true])
-		    ->addColumn('expires', 'integer', ['null' => true])
-		    ->save();
+	    $sessionsExists = $this->hasTable('sessions');
+	    if (!$sessionsExists) {
+		    $sessions =  $this->table('sessions',['id' => false, 'primary_key' => ['id']]);
+		    $sessions->addColumn('id', 'string', ['limit' => 40])
+			    ->addColumn('data', 'text', ['null' => true])
+			    ->addColumn('expires', 'integer', ['null' => true])
+			    ->save();
+	    }
 
 	    //Seed roles table by default data
 	    $roles = TableRegistry::get('Passengers.Roles');
@@ -131,7 +134,7 @@ class InitialMigration extends AbstractMigration
 		    $users->save($user);
 	    }
 
-	    $exists = $this->hasTable('cells');
+	    $exists = $this->hasTable('rear_engine_cells');
 	    if ($exists) {
 	        //Seed roles table by default data
 		    $cells = TableRegistry::get('RearEngine.Cells');
@@ -156,8 +159,8 @@ class InitialMigration extends AbstractMigration
      */
     public function down()
     {
-	    $this->dropTable('roles');
-	    $this->dropTable('users');
+	    $this->dropTable('passengers_roles');
+	    $this->dropTable('passengers_users');
 	    $this->dropTable('sessions');
 
 	    TableRegistry::get('RearEngine.Cells')->deleteAll([

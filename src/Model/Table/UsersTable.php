@@ -27,7 +27,7 @@ class UsersTable extends Table {
  * @return void
  */
 	public function initialize(array $config) {
-		$this->table('users');
+		$this->table('passengers_users');
 		$this->displayField('id');
 		$this->primaryKey('id');
 		$this->addBehavior('Timestamp');
