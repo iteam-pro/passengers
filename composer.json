@@ -19,7 +19,9 @@
 	"require": {
 		"cakephp/cakephp": "~3.0",
 		"iteam-pro/rear_engine": "*",
+		"cakedc/search": "3.0.*-dev",
 		"cakephp/migrations": "*",
+		"friendsofcake/authenticate": "dev-cake3",
 		"cakephp/acl": "*"
 	},
 	"require-dev": {
