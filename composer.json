@@ -18,8 +18,9 @@
 	"minimum-stability": "dev",
 	"require": {
 		"cakephp/cakephp": "~3.0",
-		"iteam-pro/rear_engine": "dev-master",
-		"cakephp/acl": "dev-master"
+		"iteam-pro/rear_engine": "*",
+		"cakephp/migrations": "*",
+		"cakephp/acl": "*"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "*"
