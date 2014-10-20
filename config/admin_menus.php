@@ -16,6 +16,12 @@ $config = [
 			'menu' => [
 				'top' => [
 					'add' => [
+						'title' => __d('passengers', 'Add...'),
+						'weight' => 10,
+						'options' => [
+							'dropdown' => 'dropdown-quick-actions',
+							'icon' => 'fa fa-plus'
+						],
 						'children' => [
 							'users' => [
 								'title' => __d('passengers', 'Add User'),
@@ -32,6 +38,42 @@ $config = [
 							]
 						]
 					],
+					'user' => [
+						'title' => __d('passengers', 'Profile'),
+						'weight' => 999,
+						'options' => [
+							'dropdown' => 'dropdown-quick-actions',
+							'icon' => 'fa fa-user'
+						],
+						'children' => [
+							'account' => [
+								'title' => __d('passengers', 'My account'),
+								'weight' => 10,
+								'url' => [
+									'prefix' => 'admin',
+									'plugin' => 'Passengers',
+									'controller' => 'Users',
+									'action' => 'index'
+								],
+								'options' => [
+									'icon' => 'fa fa-user'
+								]
+							],
+							'logout' => [
+								'title' => __d('passengers', 'Sign out'),
+								'weight' => 10,
+								'url' => [
+									'prefix' => 'admin',
+									'plugin' => 'Passengers',
+									'controller' => 'Users',
+									'action' => 'signout'
+								],
+								'options' => [
+									'icon' => 'fa fa-sign-out'
+								]
+							]
+						]
+					]
 				],
 				'main' => [
 					'accounts' => [
