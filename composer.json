@@ -1,25 +1,26 @@
 {
-	"name": "iteam-pro/passengers",
+	"name": "mindforce/passengers",
 	"description": "CakePHP Users management plugin",
-	"homepage": "http://iteam-pro.com",
+	"homepage": "http://mindforce.me",
 	"keywords": ["cakephp", "ui"],
 	"type": "cakephp-plugin",
 	"license": "MIT",
 	"authors": [
 		{
-			"name": "iTeam s.r.o.",
-			"homepage": "https://iteam-pro.com"
+			"name": "Denys Kyselov",
+			"homepage": "https://mindforce.me"
 		}
 	],
 	"support": {
-		"issues": "https://github.com/iteam-pro/passengers/issues",
-		"source": "https://github.com/iteam-pro/passengers"
+		"issues": "https://github.com/mindforce/passengers/issues",
+		"source": "https://github.com/mindforce/passengers"
 	},
 	"minimum-stability": "dev",
 	"require": {
 		"cakephp/cakephp": "~3.0",
-		"iteam-pro/rear_engine": "*",
+		"mindforce/rear_engine": "*",
 		"cakedc/search": "3.0.*-dev",
+		"dereuromark/cakephp-tools": "dev-cake3",
 		"cakephp/migrations": "*",
 		"friendsofcake/authenticate": "dev-cake3",
 		"cakephp/acl": "*"

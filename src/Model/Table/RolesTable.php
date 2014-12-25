@@ -21,7 +21,12 @@ class RolesTable extends Table {
 		$this->displayField('title');
 		$this->primaryKey('id');
 		$this->addBehavior('Timestamp');
-
+		$this->addBehavior('Tools.Slugged', [
+			'length' => 255,
+			'unique' => true,
+			'case' => 'low',
+			'on' => 'beforeSave',
+		]);
 		$this->hasMany('Users', [
 			'foreignKey' => 'role_id',
 			'className' => 'Passengers.Users',
@@ -40,8 +45,8 @@ class RolesTable extends Table {
 			->allowEmpty('id', 'create')
 			->validatePresence('title', 'create')
 			->notEmpty('title')
-			->validatePresence('slug', 'create')
-			->notEmpty('slug')
+			//->validatePresence('slug', 'create')
+			//->notEmpty('title')
 			->add('admin', 'valid', ['rule' => 'boolean'])
 			->allowEmpty('admin')
 			->add('core', 'valid', ['rule' => 'boolean'])

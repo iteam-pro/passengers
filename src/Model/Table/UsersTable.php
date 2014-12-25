@@ -31,13 +31,13 @@ class UsersTable extends Table {
 		$this->displayField('id');
 		$this->primaryKey('id');
 		$this->addBehavior('Timestamp');
+		$this->addBehavior('Search.Searchable');
 
 		$this->belongsTo('Roles', [
 			'foreignKey' => 'role_id',
 			'className' => 'Passengers.Roles',
 		]);
 
-		$this->addBehavior('Search.Searchable');
 	}
 
 /**
@@ -56,8 +56,8 @@ class UsersTable extends Table {
 			->validatePresence('username', 'create')
 			->notEmpty('username')
 			->add('username', 'unique', ['rule' => 'validateUnique', 'provider' => 'table'])
-			->validatePresence('password', 'create')
-			->notEmpty('password')
+			//->validatePresence('password', 'create')
+			//->notEmpty('password')
 			->add('email', 'valid', ['rule' => 'email'])
 			->validatePresence('email', 'create')
 			->notEmpty('email')

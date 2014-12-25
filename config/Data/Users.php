@@ -9,29 +9,29 @@
 * @since         0.0.1
 * @license       http://www.opensource.org/licenses/mit-license.php MIT License
 */
-namespace Passengers\View\Cell;
 
-use Cake\View\Cell;
+use Cake\Auth\PasswordHasherFactory;
 
-/**
- * AdminSignedUser cell
- */
-class AdminSignedUserCell extends Cell {
+class UsersData
+{
 
-/**
- * List of valid options that can be passed into this
- * cell's constructor.
- *
- * @var array
- */
-	protected $_validCellOptions = [];
+	public $users = [
+		[
+			'id' => 1,
+			'role_id' => 4,
+			'username' => 'admin',
+			'password' => 'qwerty1234',
+			'email' => 'admin@example.com',
+			'active' => true,
+		]
+	];
 
-/**
- * Default display method.
- *
- * @return void
- */
-	public function display() {
+	public function change($data = []){
+
+		$passwordHasher = PasswordHasherFactory::build('Default');
+		$data['password'] = $passwordHasher->hash($data['password']);
+
+		return $data;
 	}
 
 }
