@@ -53,9 +53,8 @@ class CoreEvent implements EventListenerInterface {
                     'userModel' => 'Passengers.Users',
                     'scope' => ['Users.active' => 1],
                 ],
-                //TODO Replace to Passengers/Authenticate.Cookie after session call fix
-                'Passengers.Cookie',
-				'FOC/Authenticate.MultiColumn' => [
+                'FOC/Authenticate.Cookie',
+                'FOC/Authenticate.MultiColumn' => [
 					'columns' => ['username', 'email'],
 					'passwordHasher' => [
 						'className' => 'Default',
