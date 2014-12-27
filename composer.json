@@ -12,8 +12,8 @@
 		}
 	],
 	"support": {
-		"issues": "https://github.com/mindforce/passengers/issues",
-		"source": "https://github.com/mindforce/passengers"
+		"issues": "https://github.com/mindforce/cakephp-passengers/issues",
+		"source": "https://github.com/mindforce/cakephp-passengers"
 	},
 	"minimum-stability": "dev",
 	"require": {
