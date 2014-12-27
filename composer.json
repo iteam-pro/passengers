@@ -1,5 +1,5 @@
 {
-	"name": "mindforce/passengers",
+	"name": "mindforce/cakephp-passengers",
 	"description": "CakePHP Users management plugin",
 	"homepage": "http://mindforce.me",
 	"keywords": ["cakephp", "ui"],
@@ -18,7 +18,7 @@
 	"minimum-stability": "dev",
 	"require": {
 		"cakephp/cakephp": "~3.0",
-		"mindforce/rear_engine": "*",
+		"mindforce/cakephp-rear-engine": "*",
 		"cakedc/search": "3.0.*-dev",
 		"dereuromark/cakephp-tools": "dev-cake3",
 		"cakephp/migrations": "*",
