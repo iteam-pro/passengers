@@ -43,7 +43,7 @@ class RolesTable extends Table {
 		$validator
 			->add('id', 'valid', ['rule' => 'numeric'])
 			->allowEmpty('id', 'create')
-			->validatePresence('title', 'create')
+			->requirePresence('title', 'create')
 			->notEmpty('title')
 			//->validatePresence('slug', 'create')
 			//->notEmpty('title')
