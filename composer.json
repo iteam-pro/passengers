@@ -2,7 +2,7 @@
 	"name": "mindforce/cakephp-passengers",
 	"description": "CakePHP Users management plugin",
 	"homepage": "http://mindforce.me",
-	"keywords": ["cakephp", "ui"],
+	"keywords": ["cakephp", "ui", "users", "authentication", "authorization"],
 	"type": "cakephp-plugin",
 	"license": "MIT",
 	"authors": [
@@ -17,7 +17,9 @@
 	},
 	"minimum-stability": "dev",
 	"require": {
-		"cakephp/cakephp": "~3.0",
+        "php": ">=5.4",
+        "cakephp/plugin-installer": "*",
+        "cakephp/cakephp": "3.0.x-dev",
 		"mindforce/cakephp-rear-engine": "*",
 		"cakedc/search": "3.0.*-dev",
 		"dereuromark/cakephp-tools": "dev-cake3",
@@ -35,7 +37,8 @@
 	},
 	"autoload-dev": {
 		"psr-4": {
-			"Passengers\\Test\\": "tests"
+			"Passengers\\Test\\": "tests",
+            "Cake\\Test\\": "./vendor/cakephp/cakephp/tests"
 		}
 	}
 
