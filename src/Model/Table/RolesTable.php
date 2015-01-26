@@ -25,7 +25,6 @@ class RolesTable extends Table {
 			'length' => 255,
 			'unique' => true,
 			'case' => 'low',
-			'on' => 'beforeSave',
 		]);
 		$this->hasMany('Users', [
 			'foreignKey' => 'role_id',

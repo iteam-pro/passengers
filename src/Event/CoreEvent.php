@@ -11,13 +11,15 @@
 */
 namespace Passengers\Event;
 
+use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Controller\Component\AuthComponent;
 use Cake\Core\Configure;
 
 class CoreEvent implements EventListenerInterface {
 
-    public function implementedEvents() {
+    public function implementedEvents()
+    {
         return array(
 	        'Controller.initialize' => array(
                 'callable' => 'onControllerInit',
@@ -25,7 +27,8 @@ class CoreEvent implements EventListenerInterface {
         );
     }
 
-    public function onControllerInit($event) {
+    public function onControllerInit(Event $event)
+    {
         $controller = $event->subject();
 
 		//Skip Auth for non app controllers. DebugKit For example
@@ -75,4 +78,5 @@ class CoreEvent implements EventListenerInterface {
         //$controller->loadComponent('Passengers.Acl', [
         //]);
     }
+
 }
