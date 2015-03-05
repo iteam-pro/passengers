@@ -20,7 +20,7 @@
             <h3 class="panel-title"><?= __d('passengers', 'Please Sign In') ?></h3>
         </div>
         <div class="panel-body">
-	        <?= $this->Session->flash(); ?>
+	        <?= $this->Flash->render(); ?>
 	        <?= $this->Flash->render('auth') ?>
 	        <?= $this->Form->create() ?>
                 <fieldset>
