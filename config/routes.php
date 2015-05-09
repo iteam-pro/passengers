@@ -13,7 +13,7 @@
 use Cake\Routing\Router;
 
 Router::plugin('Passengers', function($routes) {
-	$routes->fallbacks();
+	$routes->fallbacks('InflectedRoute');
 });
 Router::connect('/signin', ['plugin' => 'Passengers', 'controller' => 'Users', 'action' => 'signin']);
 Router::connect('/signout', ['plugin' => 'Passengers', 'controller' => 'Users', 'action' => 'signout']);
@@ -21,7 +21,7 @@ Router::connect('/signup', ['plugin' => 'Passengers', 'controller' => 'Users', '
 
 Router::prefix('admin', function($routes) {
 	$routes->plugin('Passengers', function($routes) {
-		$routes->fallbacks();
+		$routes->fallbacks('InflectedRoute');
 	});
 	$routes->connect('/users', ['plugin' => 'Passengers', 'controller' => 'Users', 'action' => 'index']);
 	$routes->connect('/users/:action', ['plugin' => 'Passengers', 'controller' => 'Users']);

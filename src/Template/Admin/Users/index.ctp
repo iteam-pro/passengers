@@ -51,11 +51,11 @@ $this->end();
 		<td><?= h($user->email); ?>&nbsp;</td>
 		<td><?= h($user->created); ?>&nbsp;</td>
 		<td><?= h($user->modified); ?>&nbsp;</td>
-		<td><?= $user->active ? $this->Html->icon('', ['class' => 'fa-check']) : $this->Html->icon('', ['class' => 'fa-times']); ?>&nbsp;</td>
+		<td><?= $user->active ? $this->Html->icon('check') : $this->Html->icon('times'); ?>&nbsp;</td>
 		<td class="actions">
-			<?= $this->Html->link(__('View'), ['action' => 'view', $user->id], ['class' => 'btn btn-sm btn-primary', 'icon' => 'fa-eye']); ?>
-			<?= $this->Html->link(__('Edit'), ['action' => 'edit', $user->id], ['class' => 'btn btn-sm btn-warning', 'icon' => 'fa-edit']); ?>
-			<?= $this->Html->link(__('Delete'), ['action' => 'delete', $user->id], ['title' => __('Are you sure you want to delete {0}?', $user->username), 'class' => 'btn btn-sm btn-danger btn-confirmation', 'icon' => 'fa-trash-o']); ?>
+			<?= $this->Html->link(__('View'), ['action' => 'view', $user->id], ['class' => 'btn btn-sm btn-primary', 'icon' => 'eye']); ?>
+			<?= $this->Html->link(__('Edit'), ['action' => 'edit', $user->id], ['class' => 'btn btn-sm btn-warning', 'icon' => 'edit']); ?>
+			<?= $this->Html->link(__('Delete'), ['action' => 'delete', $user->id], ['title' => __('Are you sure you want to delete {0}?', $user->username), 'class' => 'btn btn-sm btn-danger btn-confirmation', 'icon' => 'trash-o']); ?>
 		</td>
 	</tr>
 	<?php endforeach; ?>
