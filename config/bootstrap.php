@@ -12,6 +12,14 @@
 
 use Cake\Event\EventManager;
 use Cake\Core\Configure;
+use Cake\Core\Plugin;
+
+//TODO: For some reasons RearEngine does not loading properly
+//Plugin::loadAll([
+//    ['ignoreMissing' => true, 'bootstrap' => true],
+//    'RearEngine' => ['routes' => true],
+//]);
+Plugin::load('RearEngine', ['bootstrap' => true, 'routes' => true]);
 
 //Attach CoreEvent to wrap Acl And Auth into App
 EventManager::instance()->attach(
