@@ -22,13 +22,22 @@ use Cake\Core\Configure;
  */
 class UsersController extends AppController {
 
+    public $helpers = [
+        'PlumSearch.Search'
+    ];
+
     public function initialize() {
         parent::initialize();
-		$this->loadComponent('Search.Prg', [
-		    'presetForm' => [
-			    'table' => 'Passengers.Users'
-			]
-		]);
+        $this->loadComponent('PlumSearch.Filter', [
+            'parameters' => [
+                ['name' => 'username', 'className' => 'Input'],
+                [
+                    'name' => 'role_id',
+                    'className' => 'Select',
+                    'finder' => $this->Users->Roles->find('list'),
+                ]
+            ]
+        ]);
     }
 
 	public function beforeFilter(Event $event) {
@@ -43,9 +52,8 @@ class UsersController extends AppController {
  * @return void
  */
 	public function index() {
-		$this->Prg->commonProcess('Users');
-        $this->set('users', $this->paginate($this->Users->find('searchable', $this->Prg->parsedParams())));
-	}
+        $this->set('users', $this->paginate($this->Filter->prg($this->Users)));
+    }
 
 /**
  * View method

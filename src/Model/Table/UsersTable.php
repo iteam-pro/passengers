@@ -10,16 +10,6 @@ use Cake\Validation\Validator;
  */
 class UsersTable extends Table {
 
-	public $filterArgs = [
-		'search' => [
-			'type' => 'like',
-			'field' => [
-				'Users.username',
-				'Users.email'
-			]
-		],
-	];
-
 /**
  * Initialize method
  *
@@ -31,12 +21,15 @@ class UsersTable extends Table {
 		$this->displayField('id');
 		$this->primaryKey('id');
 		$this->addBehavior('Timestamp');
-		$this->addBehavior('Search.Searchable');
 
 		$this->belongsTo('Roles', [
 			'foreignKey' => 'role_id',
 			'className' => 'Passengers.Roles',
 		]);
+		//$this->addBehavior('Search.Searchable');
+		$this->addBehavior('PlumSearch.Filterable');
+        $this->addFilter('username', ['className' => 'Like']);
+        $this->addFilter('role_id', ['className' => 'Value']);
 
 	}
 

@@ -13,35 +13,15 @@
 <?php $this->extend('/Admin/Common/index'); ?>
 
 <?php $this->assign('title', __('Users')); ?>
-<?php
-$this->start('search');
-	echo $this->Form->create(null, [
-		'class' => 'form-inline',
-	    'url' => [
-	        'action' => 'index'
-	    ]
-	]);
-	echo $this->Form->input('search', [
-        'label' => false,
-		'placeholder' => __('Username or email'),
-		'class' => '',
-		'div' => false
-    ]);
-	echo $this->Form->submit(__('Search'), [
-        'class' => 'btn btn-default'
-	]);
-	echo $this->Form->end();
-$this->end();
-?>
 
 <table class="table table-striped">
 	<tr>
 		<th><?= $this->Paginator->sort('id'); ?></th>
-		<th><?= $this->Paginator->sort('username'); ?></th>
-		<th><?= $this->Paginator->sort('email'); ?></th>
-		<th><?= $this->Paginator->sort('created'); ?></th>
-		<th><?= $this->Paginator->sort('modified'); ?></th>
-		<th><?= $this->Paginator->sort('active'); ?></th>
+		<th><?= $this->Paginator->sort('username', __d('passengers', 'User Name')); ?></th>
+		<th><?= $this->Paginator->sort('email', __d('passengers', 'Email')); ?></th>
+		<th><?= $this->Paginator->sort('created', __d('passengers', 'Registred')); ?></th>
+		<th><?= $this->Paginator->sort('modified', __d('passengers', 'Last visit')); ?></th>
+		<th><?= $this->Paginator->sort('active', __d('passengers', 'Is Active')); ?></th>
 		<th class="actions"><?= __('Actions'); ?></th>
 	</tr>
 	<?php foreach ($users as $user): ?>

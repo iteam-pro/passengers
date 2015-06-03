@@ -21,8 +21,7 @@
         "cakephp/plugin-installer": "*",
         "cakephp/cakephp": "3.0.*",
 		"mindforce/cakephp-rear-engine": "*",
-		"cakedc/search": "3.0.*",
-		"dereuromark/cakephp-tools": "dev-cake3",
+		"dereuromark/cakephp-tools": "*",
 		"cakephp/migrations": "*",
 		"friendsofcake/authenticate": "dev-cake3",
 		"cakephp/acl": "*"
