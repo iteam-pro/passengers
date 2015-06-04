@@ -43,7 +43,8 @@
 
 <?php $this->start('actions'); ?>
 <div class="btn-group">
-	<?= $this->Html->link(__('New Role'), ['action' => 'add'], ['class' => 'btn btn-primary']); ?>	<?= $this->Html->link(__('List Users'), ['controller' => 'Users', 'action' => 'index'], ['class' => 'btn btn-default']); ?>
+	<?= $this->Html->link(__('New Role'), ['action' => 'add'], ['class' => 'btn btn-primary']); ?>
+	<?= $this->Html->link(__('List Users'), ['controller' => 'Users', 'action' => 'index'], ['class' => 'btn btn-default']); ?>
 	<?= $this->Html->link(__('New User'), ['controller' => 'Users', 'action' => 'add'], ['class' => 'btn btn-default']); ?>
 </div>
 <?php $this->end(); ?>

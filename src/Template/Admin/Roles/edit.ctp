@@ -35,4 +35,5 @@
 	<?php if(!$role->core): ?>
 		<?= $this->Html->link(__('Delete Role'), ['action' => 'delete', $role->id], ['title' => __('Are you sure you want to delete # {0}?', $role->id), 'class' => 'btn btn-danger btn-confirmation', 'icon' => 'fa-trash-o']); ?>
 	<?php endif; ?>
+</div>
 <?php $this->end(); ?>
