@@ -9,4 +9,13 @@
 * @since         0.0.1
 * @license       http://www.opensource.org/licenses/mit-license.php MIT License
 */
+$this->loadHelper('RearEngine.AdminMenu');
+$this->loadHelper('Tools.Gravatar', ['default' => 'mm', 'ext' => 'png']);
+//debug($user);
 ?>
+<li class="dropdown">
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+        <?= $this->Gravatar->image($user['email'], ['size' => 20, 'class' => 'img-circle'])?> <?= $user['username'] ?> <span class="caret"></span>
+    </a>
+    <?= $this->AdminMenu->render($children, 1, ['class' => 'dropdown-menu']); ?>
+</li>

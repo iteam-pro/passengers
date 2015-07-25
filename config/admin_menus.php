@@ -39,29 +39,17 @@ $config = [
 						]
 					],
 					'user' => [
-						'title' => __d('passengers', 'Profile'),
+						'type' => 'cell',
 						'weight' => 999,
-						'options' => [
-							'dropdown' => 'dropdown-quick-actions',
-							'icon' => 'fa fa-user'
-						],
+                        'cell' => 'Passengers.AdminSignedUser',
 						'children' => [
-							'account' => [
-								'title' => __d('passengers', 'My account'),
-								'weight' => 10,
-								'url' => [
-									'prefix' => 'admin',
-									'plugin' => 'Passengers',
-									'controller' => 'Users',
-									'action' => 'index'
-								],
-								'options' => [
-									'icon' => 'fa fa-user'
-								]
+							'separator-before-logout' => [
+								'type' => 'separator',
+								'weight' => 998,
 							],
 							'logout' => [
 								'title' => __d('passengers', 'Sign out'),
-								'weight' => 10,
+								'weight' => 999,
 								'url' => [
 									'prefix' => 'admin',
 									'plugin' => 'Passengers',

@@ -18,20 +18,42 @@ use Cake\View\Cell;
  */
 class AdminSignedUserCell extends Cell {
 
-/**
- * List of valid options that can be passed into this
- * cell's constructor.
- *
- * @var array
- */
-	protected $_validCellOptions = [];
+	public $helpers = ['RearEngine.AdminMenu', 'Tools.Gravatar'];
 
-/**
- * Default display method.
- *
- * @return void
- */
-	public function display() {
+	/**
+	 * List of valid options that can be passed into this
+	 * cell's constructor.
+	 *
+	 * @var array
+	 */
+	protected $_validCellOptions = ['options', 'children'];
+
+	/**
+	 * Default display method.
+	 *
+	 * @return void
+	 */
+	public function display($options = null, $children = null)
+	{
+		$user = $this->request->session()->read('Auth.User');
+		$children = [
+			'account' => [
+				'title' => __d('passengers', 'My account'),
+				'weight' => 10,
+				'url' => [
+					'prefix' => 'admin',
+					'plugin' => 'Passengers',
+					'controller' => 'Users',
+					'action' => 'view',
+					$user['id']
+				],
+				'options' => [
+					'icon' => 'fa fa-user'
+				]
+			],
+		] + $children;
+		$this->set('user', $user);
+		$this->set('children', $children);
 	}
 
 }
