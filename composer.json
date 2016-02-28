@@ -17,14 +17,14 @@
 	},
 	"minimum-stability": "dev",
 	"require": {
-        "php": ">=5.4",
+		"php": ">=5.4.17",
         "cakephp/plugin-installer": "*",
-        "cakephp/cakephp": "3.0.*",
+		"cakephp/cakephp": ">=3.1",
+		"cakephp/migrations": "*",
 		"mindforce/cakephp-rear-engine": "*",
 		"dereuromark/cakephp-tools": "1.0.*",
-		"cakephp/migrations": "*",
-		"friendsofcake/authenticate": "dev-cake3",
-		"cakephp/acl": "*"
+		"friendsofcake/authenticate": "dev-master",
+		"cakephp/acl": "dev-master"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "*"
