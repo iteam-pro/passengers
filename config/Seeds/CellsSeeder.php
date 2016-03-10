@@ -3,13 +3,15 @@
 use Cake\Auth\PasswordHasherFactory;
 use Phinx\Seed\AbstractSeed;
 
-class RolesAndUsersSeeder extends AbstractSeed
+class CellsSeeder extends AbstractSeed
 {
     public function run()
     {
+
+        $adminBlock = $this->fetchRow('SELECT * FROM platform_blocks WHERE slug LIKE \'dashboard-left\'');
         $data = [
             [
-    			'block_id' => 'dashboard-right',
+    			'block_id' => (isset($adminBlock['id']) ? $adminBlock['id'] : 0),
     			'title' => 'Latest registrations',
     			'slug' => 'latest-users',
     			'cell' => 'Passengers.LatestUsers',

@@ -38,7 +38,7 @@ class RolesAndUsersSeeder extends AbstractSeed
 	    $roles->insert($data)
 	        ->save();
 
-		$adminRole = $this->fetchRow('SELECT * FROM passengers_roles WHERE slug = \'admin\'');
+		$adminRole = $this->fetchRow('SELECT * FROM passengers_roles WHERE slug LIKE \'admin\'');
 		$passwordHasher = PasswordHasherFactory::build('Default');
 		$data = [
 			[

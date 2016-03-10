@@ -11,7 +11,7 @@
 */
 namespace Passengers\View\Cell;
 
-use RearEngine\View\Cell\ActiveCell;
+use Platform\View\Cell\ActiveCell;
 
 /**
  * AdminLatestUsers cell
