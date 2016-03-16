@@ -14,7 +14,7 @@ use Phinx\Migration\AbstractMigration;
 use Cake\Auth\PasswordHasherFactory;
 use Cake\ORM\TableRegistry;
 
-class InitialMigration extends AbstractMigration
+class PassengersInitialMigration extends AbstractMigration
 {
 
     /**
