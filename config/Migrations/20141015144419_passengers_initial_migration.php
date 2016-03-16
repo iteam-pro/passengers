@@ -23,7 +23,7 @@ class PassengersInitialMigration extends AbstractMigration
     public function up()
     {
 	    //Create roles table
-        $roles =  $this->table('passengers_roles');
+        $roles = $this->table('passengers_roles');
 	    $roles->addColumn('title', 'string', ['limit' => 255])
 			->addColumn('slug', 'string', ['limit' => 255])
 		    ->addColumn('admin', 'boolean', ['null' => true])
@@ -35,7 +35,7 @@ class PassengersInitialMigration extends AbstractMigration
 			->save();
 
 	    //Create users table
-	    $users =  $this->table('passengers_users');
+	    $users = $this->table('passengers_users');
 	    $users->addColumn('role_id', 'integer', ['default' => 2])
 			->addColumn('username', 'string', ['limit' => 60])
 			->addColumn('password', 'string', ['limit' => 60])
@@ -60,11 +60,6 @@ class PassengersInitialMigration extends AbstractMigration
     {
 	    $this->dropTable('passengers_roles');
 	    $this->dropTable('passengers_users');
-	    $this->dropTable('sessions');
-
-	    TableRegistry::get('RearEngine.Cells')->deleteAll([
-		    'Cells.cell LIKE' => 'Passengers.%'
-	    ]);
 
     }
 }
