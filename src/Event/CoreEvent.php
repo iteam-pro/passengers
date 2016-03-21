@@ -15,6 +15,7 @@ use Cake\Event\Event;
 use Cake\Event\EventListenerInterface;
 use Cake\Controller\Component\AuthComponent;
 use Cake\Core\Configure;
+use Cake\Core\Plugin;
 
 class CoreEvent implements EventListenerInterface {
 
@@ -32,6 +33,7 @@ class CoreEvent implements EventListenerInterface {
         $controller = $event->subject();
 
 		//Skip Auth for non app controllers. DebugKit For example
+        //possible injection hole, but needed.
 	    if(!in_array('App\Controller\AppController', class_parents($controller))) return;
 
         $controller->loadComponent('Cookie');
@@ -65,18 +67,25 @@ class CoreEvent implements EventListenerInterface {
 					]
 				]
 		    ],
-            //'authorize' => [
-            //    AuthComponent::ALL => ['actionPath' => 'controllers/'],
-            //    'Passengers.DbAcl' => [
-            //        'userModel' => 'Passengers.Users'
-            //    ],
-            //    'Passengers.PhpAcl' => [
-            //        'userModel' => 'Passengers.Users'
-            //    ],
-            //],
 	    ]);
-        //$controller->loadComponent('Passengers.Acl', [
-        //]);
+        $authorizeConfig = [
+            AuthComponent::ALL => ['actionPath' => 'controllers/'],
+            'Controller'
+        ];
+        if(Plugin::loaded('Acl')){
+            $controller->loadComponent('Acl.Acl');
+            if(file_exists(CONFIG.'acl.php')){
+                $controller->Acl->config('PhpAcl');
+            }
+            $authorizeConfig = [
+                AuthComponent::ALL => ['actionPath' => 'controllers/'],
+                'Acl.Actions' => [
+                    'userModel' => 'Passengers.Users'
+                ],
+                'Controller'
+            ];
+        }
+        $controller->Auth->config('authorize', $authorizeConfig);
     }
 
 }

@@ -40,11 +40,5 @@ Configure::write('Passengers.auth.logout_redirect', [
 //	'formFieldCurrent' => 'password_current',
 //]);
 
-//TODO: Possible
-Configure::write('Acl.classname', 'PhpAcl');
-
-#Configure::write('Acl.classname', 'DbAcl');
-#Configure::write('Acl.database', 'default');
-
 //Manage for admin registration
 Configure::write('Passengers.admin.registration.enable', true);
