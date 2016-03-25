@@ -24,6 +24,7 @@ class CoreEvent implements EventListenerInterface {
         return array(
 	        'Controller.initialize' => array(
                 'callable' => 'onControllerInit',
+                'priority' => 2
             ),
         );
     }
@@ -37,14 +38,23 @@ class CoreEvent implements EventListenerInterface {
 	    if(!in_array('App\Controller\AppController', class_parents($controller))) return;
 
         $controller->loadComponent('Cookie');
+        $loginRedirect = '/';
+        if(isset($controller->request->params['prefix'])){
+            $loginRedirect .= $controller->request->params['prefix'];
+        }
         $controller->loadComponent('Auth', [
 		    'loginAction' => [
                 'plugin' => 'Passengers',
                 'controller' => 'Users',
                 'action' => 'signin',
             ],
-            'loginRedirect' => Configure::read('Passengers.auth.logout_redirect'),
+            'loginRedirect' => $loginRedirect,
             'logoutRedirect' => [
+                'plugin' => 'Passengers',
+                'controller' => 'Users',
+                'action' => 'signin',
+            ],
+            'unauthorizedRedirect' => [
                 'plugin' => 'Passengers',
                 'controller' => 'Users',
                 'action' => 'signin',
@@ -65,14 +75,29 @@ class CoreEvent implements EventListenerInterface {
 						'className' => 'Default',
 						'hashers' => ['Default']
 					]
-				]
+				],
+                //bypass auth with guest params
+                'Passengers.Guest',
 		    ],
 	    ]);
         $authorizeConfig = [
-            AuthComponent::ALL => ['actionPath' => 'controllers/'],
             'Controller'
         ];
-        if(Plugin::loaded('Acl')){
+        if(Plugin::loaded('TinyAuth')){
+            if(file_exists(CONFIG.'acl.ini')){
+                $authorizeConfig = [
+                    AuthComponent::ALL => ['actionPath' => 'controllers/'],
+                    'TinyAuth.Tiny' => [
+                        'roleColumn' => 'role_id', // Foreign key for the Role ID in users table or in pivot table
+                        'aliasColumn' => 'slug', // Name of column in roles table holding role alias/slug
+                        'rolesTable' => 'Passengers.Roles', // name of Configure key holding available roles OR class name of roles table
+                        'usersTable' => 'Passengers.Users', // name of the Users table
+                        'superAdminRole' => 4, // id of super admin role, which grants access to ALL resources
+                        'autoClearCache' => Configure::read('debug')
+                    ],
+                ];
+            }
+        } elseif(Plugin::loaded('Acl')){
             $controller->loadComponent('Acl.Acl');
             if(file_exists(CONFIG.'acl.php')){
                 $controller->Acl->config('PhpAcl');
@@ -82,7 +107,6 @@ class CoreEvent implements EventListenerInterface {
                 'Acl.Actions' => [
                     'userModel' => 'Passengers.Users'
                 ],
-                'Controller'
             ];
         }
         $controller->Auth->config('authorize', $authorizeConfig);

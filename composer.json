@@ -29,6 +29,10 @@
 	"require-dev": {
 		"phpunit/phpunit": "*"
 	},
+	"suggest": {
+		"cakephp/acl": "Allows more advanced logging of application authorization",
+		"dereuromark/cakephp-tinyauth": "Simple and robust authorization plugin"
+	},
 	"autoload": {
 		"psr-4": {
 			"Passengers\\": "src"

@@ -27,18 +27,5 @@ EventManager::instance()->attach(
     null
 );
 
-//Logoout redirect url
-Configure::write('Passengers.auth.logout_redirect', [
-	'plugin' => 'RearEngine',
-	'controller' => 'Dashboards',
-	'action' => 'index'
-]);
-
-//Configure::write('Passwordable', [
-//	'formField' => 'password_new',
-//	'formFieldRepeat' => 'password_confirm',
-//	'formFieldCurrent' => 'password_current',
-//]);
-
 //Manage for admin registration
 Configure::write('Passengers.admin.registration.enable', true);
