@@ -15,7 +15,7 @@ class GuestAuthenticate extends BaseAuthenticate
 
     public function unauthenticated(Request $request, Response $response)
     {
-        $role = TableRegistry::get('Passengers.roles')->get(1);
+        $role = TableRegistry::get('Passengers.Roles')->get(1);
         $session = $request->session();
 
         $user = [
