@@ -12,11 +12,14 @@
 namespace Passengers\Model\Entity;
 
 use Cake\ORM\Entity;
+use JeremyHarris\LazyLoad\ORM\LazyLoadEntityTrait;
 
 /**
  * User Entity.
  */
 class User extends Entity {
+
+    use LazyLoadEntityTrait;
 
 /**
  * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -24,20 +27,8 @@ class User extends Entity {
  * @var array
  */
 	protected $_accessible = [
-		'role_id' => true,
-		'username' => true,
-		'password' => true,
-		//TODO: Under the question neded this fields or not
-		'password_new' => true,
-		'password_confirm' => true,
-		'password_current' => true,
-		'email' => true,
-		'active' => true,
-		'activation_code' => true,
-		'update_required' => true,
-		'profile' => true,
-		'options' => true,
-		'role' => true,
+		'*' => true,
+		'id' => false,
 	];
 
 }

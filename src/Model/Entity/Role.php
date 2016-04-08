@@ -12,11 +12,14 @@
 namespace Passengers\Model\Entity;
 
 use Cake\ORM\Entity;
+use JeremyHarris\LazyLoad\ORM\LazyLoadEntityTrait;
 
 /**
  * Role Entity.
  */
 class Role extends Entity {
+
+    use LazyLoadEntityTrait;
 
 /**
  * Fields that can be mass assigned using newEntity() or patchEntity().
@@ -24,11 +27,8 @@ class Role extends Entity {
  * @var array
  */
 	protected $_accessible = [
-		'title' => true,
-		'slug' => true,
-		'admin' => true,
-		'core' => true,
-		'users' => true,
+		'*' => true,
+		'id' => true,
 	];
 
 }

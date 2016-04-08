@@ -24,8 +24,7 @@ class Session extends Entity {
  * @var array
  */
 	protected $_accessible = [
-		'data' => true,
-		'expires' => true,
+		'*' => true,
 	];
 
 }

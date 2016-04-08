@@ -16,6 +16,8 @@ use Cake\Event\EventListenerInterface;
 use Cake\Controller\Component\AuthComponent;
 use Cake\Core\Configure;
 use Cake\Core\Plugin;
+use Cake\ORM\Association;
+use Cake\ORM\Tableregistry;
 
 class CoreEvent implements EventListenerInterface {
 
@@ -26,6 +28,9 @@ class CoreEvent implements EventListenerInterface {
                 'callable' => 'onControllerInit',
                 'priority' => 2
             ),
+            'Auth.afterIdentify' => array(
+                'callable' => 'onAuthIdentify',
+            )
         );
     }
 
@@ -110,6 +115,30 @@ class CoreEvent implements EventListenerInterface {
             ];
         }
         $controller->Auth->config('authorize', $authorizeConfig);
+    }
+
+    public function onAuthIdentify(Event $event)
+    {
+        $object = $event->subject();
+        list($user, $auth) = $event->data;
+        if(!isset($user['id'])){
+            return;
+        }
+        if($userModel = $auth->config('userModel')){
+            $userModel = TableRegistry::get($userModel);
+            $contain = [];
+            foreach($userModel->associations() as $association){
+                if(in_array($association->type(), [Association::ONE_TO_ONE, Association::MANY_TO_ONE])){
+                    $contain[] = $association->name();
+                }
+            }
+            if(!empty($contain)){
+                $user = $userModel->get($user['id'], ['contain' => $contain])->toArray();
+                unset($user['password']);
+            }
+        }
+        //set result to return updated user data
+        return $user;
     }
 
 }

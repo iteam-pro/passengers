@@ -23,8 +23,9 @@
 		"cakephp/migrations": "*",
 		"mindforce/cakephp-rear-engine": "*",
 		"dereuromark/cakephp-tools": "1.0.*",
-		"friendsofcake/authenticate": "dev-master",
-		"cakephp/acl": "dev-master"
+		"friendsofcake/authenticate": "~2.0",
+		"jeremyharris/cakephp-lazyload": "~1.0",
+		"cakephp/acl": "0.1.0"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "*"
