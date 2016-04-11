@@ -168,6 +168,7 @@ class UsersController extends AppController {
  * @return void
  */
 	public function signout() {
+        $this->Cookie->delete('RememberMe');
 	    return $this->redirect($this->Auth->logout());
 	}
 
@@ -177,7 +178,7 @@ class UsersController extends AppController {
  * @return void
  */
 	public function signup() {
-		$signupAllowed = Configure::read('Passengers.admin.registration.enable');
+        $signupAllowed = Configure::read('App.allow_user_registration');
 		if (!$signupAllowed) {
 			$this->Flash->error(__d('passengers', 'Registration is disabled. Please contact with resourse administration'));
 			return $this->redirect(['action' => 'signin']);

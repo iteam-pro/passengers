@@ -110,6 +110,7 @@ class UsersController extends AppController {
  * @return void
  */
 	public function signout() {
+		$this->Cookie->delete('RememberMe');
 		return $this->redirect($this->Auth->logout());
 	}
 
