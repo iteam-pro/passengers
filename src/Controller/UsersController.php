@@ -132,7 +132,7 @@ class UsersController extends AppController {
 		$user = $this->Users->newEntity($this->request->data);
 		if ($this->request->is('post')&&$signupAllowed) {
 			//TODO: make it configurable
-			$user->role_id = 1;
+			$user->role_id = 2;
 			//TODO: make it configurable
 			$user->active = 0;
 			if ($this->Users->save($user)) {
