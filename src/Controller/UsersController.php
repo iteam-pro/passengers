@@ -100,6 +100,21 @@ class UsersController extends AppController {
  */
 	public function signin() {
 		if ($this->request->is('post')) {
+			if($login = $this->request->data('username')){
+				$active = $this->Users->find('all', [
+					'conditions' => [
+						'Users.active' => true,
+						'OR' => [
+							'Users.email' => $login,
+							'Users.username' => $login
+						]
+					]
+				])->count();
+				if(!$active){
+					$this->Flash->error(__d('passengers', 'Sorry, but your account has been not activated yet.'));
+					$this->render();
+				}
+			}
 			$user = $this->Auth->identify();
 			if ($user) {
 				$this->Auth->setUser($user);
@@ -108,7 +123,7 @@ class UsersController extends AppController {
 			}
 			$this->Flash->error(__d('passengers', 'Invalid username or password, try again'));
 		}
-		$this->set('signupAllowed', Configure::read('Passengers.admin.registration.enable'));
+		$this->set('signupAllowed', Configure::read('App.allow_user_registration'));
 	}
 
 /**
@@ -162,6 +177,28 @@ class UsersController extends AppController {
 
 		$this->set(compact('user'));
 	}
+
+    public function activate($code = null){
+        if(!$code){
+            throw new BadRequestException('There is no any code to activate');
+        }
+        $user = $this->Users->findByActivationCode($code)->first();
+        if(!$user){
+            throw new NotFoundException('There is no any user to activate');
+        }
+        $user = $this->Users->patchEntity($user, [
+            'activation_code' => '',
+            'active' => true,
+        ]);
+        if($this->Users->save($user)){
+			$this->Auth->setUser($user->toArray());
+            if($user->update_required){
+                $this->Flash->warning(__d('passengers', 'We are not sure that your profile data is correct. Maybe you need to update your data.'));
+                $this->redirect(['action' => 'edit']);
+            }
+        }
+        $this->set('user', $user);
+    }
 
 	protected function _setCookie() {
 		if (!$this->request->data('remember_me')) {
