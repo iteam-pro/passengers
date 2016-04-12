@@ -35,10 +35,18 @@
 	]);
 	echo $this->Form->input('role_id', [
 		'label' => __d('passengers', 'Role for user'),
+		'value' => 2,
 		'options' => $roles
 	]);
 	echo $this->Form->input('active', [
+		'type' => 'switcher',
+		'value' => true,
 		'label' => __d('passengers', 'User is Active')
+	]);
+	echo $this->Form->input('send_registration_email', [
+		'type' => 'switcher',
+		'value' => true,
+		'label' => __d('passengers', 'Send registration email to user')
 	]);
 ?>
 

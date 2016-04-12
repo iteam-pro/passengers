@@ -28,6 +28,8 @@ class UsersController extends AppController {
 
     public function initialize() {
         parent::initialize();
+        $this->loadComponent('Cookie');
+		$this->loadComponent('Platform.Email');
         $this->loadComponent('PlumSearch.Filter', [
             'parameters' => [
                 ['name' => 'username', 'className' => 'Input'],
@@ -83,9 +85,16 @@ class UsersController extends AppController {
 		$user = $this->Users->newEntity($this->request->data);
 		if ($this->request->is('post')) {
 			if ($this->Users->save($user)) {
-				$this->Flash->success('The user has been saved.');
+                if($sendEmail = $this->request->data('send_registration_email')){
+                    $this->Email->send($user->email, ['user' => $user], [
+                        'subject' => __('Registration confirmation'),
+                        'template' => 'Passengers.signup'
+                    ]);
+                }
+                $this->Flash->success('The user has been saved.');
 				return $this->redirect(['action' => 'index']);
 			} else {
+                debug($user);
 				$this->Flash->error('The user could not be saved. Please, try again.');
 			}
 			$user->unsetProperty('password_new');

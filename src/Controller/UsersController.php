@@ -15,7 +15,6 @@ use Passengers\Controller\AppController;
 use Cake\Event\Event;
 use Cake\Core\Configure;
 
-
 /**
  * Users Controller
  *
@@ -23,9 +22,16 @@ use Cake\Core\Configure;
  */
 class UsersController extends AppController {
 
-	public function beforeFilter(Event $event) {
-	    parent::beforeFilter($event);
+	public function initialize()
+	{
+		parent::initialize();
 		$this->loadComponent('Cookie');
+		$this->loadComponent('Platform.Email');
+	}
+
+	public function beforeFilter(Event $event)
+	{
+	    parent::beforeFilter($event);
 		//Allow users to signin and signup
 		$this->Auth->allow(['signin', 'signup']);
 	}
@@ -44,17 +50,18 @@ class UsersController extends AppController {
 		$this->set('user', $user);
 	}
 
-/**
- * Edit method
- *
- * @param string $id
- * @return void
- * @throws NotFoundException
- */
+	/**
+	 * Edit method
+	 *
+	 * @param string $id
+	 * @return void
+	 * @throws NotFoundException
+	 */
 	public function edit($id = null) {
 		$user = $this->Users->get($id, [
 			'contain' => []
 		]);
+
 		if ($this->request->is(['patch', 'post', 'put'])) {
 			$user = $this->Users->patchEntity($user, $this->request->data);
 			if ($this->Users->save($user)) {
@@ -134,9 +141,16 @@ class UsersController extends AppController {
 		if ($this->request->is('post')&&$signupAllowed) {
 			//TODO: make it configurable
 			$user->role_id = 2;
-			//TODO: make it configurable
-			$user->active = 0;
+			$user->active = 1;
+			if(Configure::read('App.use_users_activation')){
+				$user->active = 1;
+				$user->activation_code = md5(time().$_data['password_new']);
+			}
 			if ($this->Users->save($user)) {
+				$this->Email->send($user->email, ['user' => $user], [
+					'subject' => __('Registration confirmation'),
+					'template' => 'Passengers.signup'
+				]);
 				$this->Flash->success(__d('passengers', 'Your account has been created.'));
 				return $this->redirect(['action' => 'signin']);
 			} else {

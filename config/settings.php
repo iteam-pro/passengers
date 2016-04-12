@@ -23,4 +23,16 @@ $config = [
             ]
         ],
     ],
+    [
+        'path' => 'App.use_users_activation',
+        'title' => 'Use activation for new users',
+        'default' => '0',
+        'options' => [
+            "type" => "radio",
+            "options" => [
+                "1" => "Yes",
+                "0" => "No"
+            ]
+        ],
+    ],
 ];
