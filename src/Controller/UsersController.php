@@ -15,6 +15,7 @@ use Passengers\Controller\AppController;
 use Cake\Event\Event;
 use Cake\Core\Configure;
 use Hackzilla\PasswordGenerator\Generator\ComputerPasswordGenerator;
+use Cake\Auth\DefaultPasswordHasher;
 
 /**
  * Users Controller
@@ -231,6 +232,36 @@ class UsersController extends AppController {
             
             $this->Flash->warning(__d('passengers', 'If the email you specified exists in our system, we\'ve sent a new password to it.'));
             return $this->redirect(['action' => 'signin']);
+        }
+    }
+
+    public function password()
+    {
+        if ($this->request->is('post')) {
+            $user = $this->Users->findById(
+                $this->request->session()->read('Auth.User.id')
+            )->first();
+
+            if ((new DefaultPasswordHasher)->check($this->request->data('password_current'), $user->password)) {
+                $this->Users->addBehavior('Tools.Passwordable', [
+                    'current' => true,
+                    'formFieldCurrent' => 'password_current',
+                    'formField' => 'password_new',
+                    'formFieldRepeat' => 'password_confirm',
+                ]);
+                
+                $user = $this->Users->patchEntity($user, $this->request->data);
+                if ($this->Users->save($user)) {
+                    $this->Flash->success('The password has been changed.');
+                    return $this->redirect(['action' => 'signin']);
+                } else {
+                    $this->Flash->error('The password could not be changed. Please, try again.');
+                    return $this->redirect(['action' => 'password']);
+                }
+            }
+            
+            $this->Flash->error('Error. The password could not be changed. Please, try again.');
+            return $this->redirect(['action' => 'password']);
         }
     }
 
