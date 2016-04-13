@@ -27,5 +27,10 @@ EventManager::instance()->attach(
     null
 );
 
+EventManager::instance()->attach(
+	new Passengers\Event\SignInEvent,
+    null
+);
+
 //Manage for admin registration
 Configure::write('Passengers.admin.registration.enable', true);

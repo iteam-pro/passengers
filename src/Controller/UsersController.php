@@ -100,25 +100,16 @@ class UsersController extends AppController {
  */
 	public function signin() {
 		if ($this->request->is('post')) {
-			if($login = $this->request->data('username')){
-				$active = $this->Users->find('all', [
-					'conditions' => [
-						'Users.active' => true,
-						'OR' => [
-							'Users.email' => $login,
-							'Users.username' => $login
-						]
-					]
-				])->count();
-				if(!$active){
-					$this->Flash->error(__d('passengers', 'Sorry, but your account has been not activated yet.'));
-					$this->render();
-				}
+			$event = $this->dispatchEvent('Controller.Users.beforeSignIn');
+			if ($event->isStopped()) {
+				$this->Flash->error($event->result);
+				$this->redirect(['action' => 'signin']);
 			}
 			$user = $this->Auth->identify();
 			if ($user) {
 				$this->Auth->setUser($user);
 				$this->_setCookie();
+				$event = $this->dispatchEvent('Controller.Users.afterSignIn');
 				return $this->redirect($this->Auth->redirectUrl());
 			}
 			$this->Flash->error(__d('passengers', 'Invalid username or password, try again'));
@@ -161,7 +152,9 @@ class UsersController extends AppController {
 				$user->active = 1;
 				$user->activation_code = md5(time().$_data['password_new']);
 			}
+			$rememberPass = $user->password_new;
 			if ($this->Users->save($user)) {
+				$user->password = $rememberPass;
 				$this->Email->send($user->email, ['user' => $user], [
 					'subject' => __('Registration confirmation'),
 					'template' => 'Passengers.signup'

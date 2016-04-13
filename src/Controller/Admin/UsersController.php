@@ -84,8 +84,10 @@ class UsersController extends AppController {
 		]);
 		$user = $this->Users->newEntity($this->request->data);
 		if ($this->request->is('post')) {
+            $rememberPass = $user->password_new;
 			if ($this->Users->save($user)) {
                 if($sendEmail = $this->request->data('send_registration_email')){
+                    $user->password = $rememberPass;
                     $this->Email->send($user->email, ['user' => $user], [
                         'subject' => __('Registration confirmation'),
                         'template' => 'Passengers.signup'
@@ -94,7 +96,6 @@ class UsersController extends AppController {
                 $this->Flash->success('The user has been saved.');
 				return $this->redirect(['action' => 'index']);
 			} else {
-                debug($user);
 				$this->Flash->error('The user could not be saved. Please, try again.');
 			}
 			$user->unsetProperty('password_new');
