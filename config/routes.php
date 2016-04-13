@@ -18,6 +18,7 @@ Router::plugin('Passengers', function($routes) {
 Router::connect('/signin', ['plugin' => 'Passengers', 'controller' => 'Users', 'action' => 'signin']);
 Router::connect('/signout', ['plugin' => 'Passengers', 'controller' => 'Users', 'action' => 'signout']);
 Router::connect('/signup', ['plugin' => 'Passengers', 'controller' => 'Users', 'action' => 'signup']);
+Router::connect('/user/reset', ['plugin' => 'Passengers', 'controller' => 'Users', 'action' => 'reset']);
 Router::connect('/user/activate/*', ['plugin' => 'Passengers', 'controller' => 'Users', 'action' => 'activate']);
 
 Router::prefix('admin', function($routes) {

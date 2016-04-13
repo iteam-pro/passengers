@@ -14,6 +14,7 @@ namespace Passengers\Controller;
 use Passengers\Controller\AppController;
 use Cake\Event\Event;
 use Cake\Core\Configure;
+use Hackzilla\PasswordGenerator\Generator\ComputerPasswordGenerator;
 
 /**
  * Users Controller
@@ -33,7 +34,7 @@ class UsersController extends AppController {
 	{
 	    parent::beforeFilter($event);
 		//Allow users to signin and signup
-		$this->Auth->allow(['signin', 'signup']);
+		$this->Auth->allow(['signin', 'signup', 'reset']);
 	}
 
 /**
@@ -191,6 +192,46 @@ class UsersController extends AppController {
             }
         }
         $this->set('user', $user);
+    }
+
+    public function reset()
+    {
+        if ($this->request->is('post')) {
+            $user = $this->Users->find('all', [
+                'conditions' => [
+                    'Users.active' => true,
+                    'Users.email' => $this->request->data('email'),
+                ]
+            ])->first();
+            
+            if ($user) {
+                $password = (new ComputerPasswordGenerator())
+                    ->setOptionValue(ComputerPasswordGenerator::OPTION_UPPER_CASE, true)
+                    ->setOptionValue(ComputerPasswordGenerator::OPTION_LOWER_CASE, true)
+                    ->setOptionValue(ComputerPasswordGenerator::OPTION_NUMBERS, true)
+                    ->setOptionValue(ComputerPasswordGenerator::OPTION_SYMBOLS, false)
+                    ->generatePassword();
+                
+                $this->Users->addBehavior('Tools.Passwordable', [
+                    'confirm' => false,
+                ]);
+                $user = $this->Users->patchEntity($user, ['pwd' => $password]);
+                if ($this->Users->save($user)) {
+                    $user->password = $password;
+                    $this->Email->send($user->email, ['user' => $user], [
+                        'subject' => __('Reset password'),
+                        'template' => 'Passengers.reset'
+                    ]);
+                    $this->Flash->success('Please check email for new password.');
+                    return $this->redirect(['action' => 'signin']);
+                } else {
+                    $this->Flash->error('The password could not be reseted. Please, try again.');
+                }
+            }
+            
+            $this->Flash->warning(__d('passengers', 'If the email you specified exists in our system, we\'ve sent a new password to it.'));
+            return $this->redirect(['action' => 'signin']);
+        }
     }
 
 	protected function _setCookie() {
