@@ -161,6 +161,7 @@ class UsersController extends AppController {
 					'subject' => __('Registration confirmation'),
 					'template' => 'Passengers.signup'
 				]);
+                                $this->dispatchEvent('Controller.Users.afterSignUp', [$user]);
 				$this->Flash->success(__d('passengers', 'Your account has been created.'));
 				return $this->redirect(['action' => 'signin']);
 			} else {
@@ -253,7 +254,7 @@ class UsersController extends AppController {
                 $user = $this->Users->patchEntity($user, $this->request->data);
                 if ($this->Users->save($user)) {
                     $this->Flash->success('The password has been changed.');
-                    return $this->redirect(['action' => 'signin']);
+                    return $this->redirect(['action' => 'password']);
                 } else {
                     $this->Flash->error('The password could not be changed. Please, try again.');
                     return $this->redirect(['action' => 'password']);

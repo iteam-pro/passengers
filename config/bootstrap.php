@@ -23,12 +23,12 @@ Plugin::load('RearEngine', ['bootstrap' => true, 'routes' => true]);
 
 //Attach CoreEvent to wrap Acl And Auth into App
 EventManager::instance()->attach(
-	new Passengers\Event\CoreEvent,
+    new Passengers\Event\CoreEvent,
     null
 );
 
 EventManager::instance()->attach(
-	new Passengers\Event\SignInEvent,
+    new Passengers\Event\SignInEvent,
     null
 );
 
