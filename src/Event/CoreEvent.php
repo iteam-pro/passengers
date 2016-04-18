@@ -48,7 +48,7 @@ class CoreEvent implements EventListenerInterface {
             $loginRedirect .= $controller->request->params['prefix'];
         }
         $controller->loadComponent('Auth', [
-		    'loginAction' => [
+            'loginAction' => [
                 'plugin' => 'Passengers',
                 'controller' => 'Users',
                 'action' => 'signin',
