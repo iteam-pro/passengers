@@ -15,20 +15,29 @@ class GuestAuthenticate extends BaseAuthenticate
 
     public function unauthenticated(Request $request, Response $response)
     {
-        $role = TableRegistry::get('Passengers.Roles')->get(1);
-        $session = $request->session();
-
-        $user = [
-            'id' => '0',
-            'role_id' => $role->id,
-            'username' => 'guest',
-            'email' => 'me@guest.co',
-            'active' => 1,
-            'role' => $role->toArray()
-        ];
-        if(!$session->read('Auth.User')){
-            $session->write('Auth.User', $user);
+        if(!$request->session()->read('Auth.User')){
+            $role = TableRegistry::get('Passengers.Roles')->findBySlug('guest')->first()->toArray();
+            if(!$role){
+                $role = [
+                    'id' => 1,
+                	'title' => 'Guest',
+                	'slug' => 'guest',
+                	'admin' => false,
+                	'core' => true,
+                	'created' => null,
+                	'modified' => null,
+                	'user_count' => 0
+                ];
+            }
+            $request->session()->write('Auth.User', [
+                'id' => '0',
+                'role_id' => $role['id'],
+                'username' => 'guest',
+                'email' => 'me@guest.co',
+                'active' => 1,
+                'role' => $role
+            ]);
         }
-        return null;
+        return true;
     }
 }
