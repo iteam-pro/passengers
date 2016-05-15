@@ -37,7 +37,7 @@ class SignInEvent implements EventListenerInterface {
 				])->count();
 			}
         }
-        if($active){
+        if(!$active){
             $event->stopPropagation();
             return __d('passengers', 'Sorry, but your account has been not activated yet.');
         }
