@@ -25,13 +25,18 @@ class SignInEvent implements EventListenerInterface {
         $controller = $event->subject();
         $active = true;
         if($controller->request->is('post')){
-            if($controller->request->data('username') || $controller->request->data('email')) {
+            $userName = '';
+            if ($controller->request->data('username'))
+                $userName = $controller->request->data('username');
+            if ($controller->request->data('email'))
+                $userName = $controller->request->data('email');
+            if($userName) {
                 $active = $controller->Users->find('all', [
                     'conditions' => [
                         'Users.active' => true,
                         'OR' => [
-                            'Users.email' => $controller->request->data('email'),
-                            'Users.username' => $controller->request->data('username')
+                            'Users.email' => $userName,
+                            'Users.username' => $userName
                         ]
                     ]
                 ])->count();
