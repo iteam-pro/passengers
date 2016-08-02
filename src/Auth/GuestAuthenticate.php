@@ -40,6 +40,5 @@ class GuestAuthenticate extends BaseAuthenticate
                 'role' => $role
             ]);
         }
-        return true;
     }
 }
