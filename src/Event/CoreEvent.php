@@ -81,40 +81,27 @@ class CoreEvent implements EventListenerInterface {
 						'hashers' => ['Default']
 					]
 				],
-                //bypass auth with guest params
-                'Passengers.Guest',
 		    ],
 	    ]);
         $authorizeConfig = [
-            'Controller'
+            AuthComponent::ALL => ['actionPath' => 'controllers/'],
         ];
-        if(Plugin::loaded('TinyAuth')){
-            if(file_exists(CONFIG.'acl.ini')){
-                $authorizeConfig = [
-                    AuthComponent::ALL => ['actionPath' => 'controllers/'],
-                    'TinyAuth.Tiny' => [
-                        'roleColumn' => 'role_id', // Foreign key for the Role ID in users table or in pivot table
-                        'aliasColumn' => 'slug', // Name of column in roles table holding role alias/slug
-                        'rolesTable' => 'Passengers.Roles', // name of Configure key holding available roles OR class name of roles table
-                        'usersTable' => 'Passengers.Users', // name of the Users table
-                        'superAdminRole' => 4, // id of super admin role, which grants access to ALL resources
-                        'autoClearCache' => Configure::read('debug')
-                    ],
-                ];
+        if($authorizers = Configure::read('Passengers.authorizers')){
+            foreach($authorizers as $key=>$authorizer){
+                if(isset($authorizer['className'])&&($plugin = pluginSplit($authorizer['className'])[0])){
+                    if(!Plugin::loaded($plugin)){
+                        continue;
+                    }
+                }
+                $authorizeConfig[$key] = $authorizer;
             }
-        } elseif(Plugin::loaded('Acl')){
-            $controller->loadComponent('Acl.Acl');
-            if(file_exists(CONFIG.'acl.php')){
-                $controller->Acl->config('PhpAcl');
-            }
-            $authorizeConfig = [
-                AuthComponent::ALL => ['actionPath' => 'controllers/'],
-                'Acl.Actions' => [
-                    'userModel' => 'Passengers.Users'
-                ],
-            ];
         }
-        $controller->Auth->config('authorize', $authorizeConfig);
+        $forceAuth = Configure::read('App.force_user_auth');
+        if($forceAuth&&empty($authorizeConfig)){
+            $authorizeConfig[] = 'Controller';
+        }
+        $controller->Auth->config('authorize', array(AuthComponent::ALL => ['actionPath' => 'controllers/'])+$authorizeConfig);
+        $this->_setDefaultUser($controller);
     }
 
     public function onAuthIdentify(Event $event)
@@ -139,6 +126,41 @@ class CoreEvent implements EventListenerInterface {
         }
         //set result to return updated user data
         return $user;
+    }
+
+    protected function _setDefaultUser($controller){
+        $request = $controller->request;
+        $forceAuth = Configure::read('App.force_user_auth');
+        //if authentication forced just skip guest user session and redirect to signin page
+        if(!$forceAuth&&!$request->session()->read('Auth.User')){
+            //if authentication not forced check prefix. Usually only requests without prefixes allow guests
+            if(!isset($request->params['prefix'])||empty($request->params['prefix'])){
+                $role = TableRegistry::get('Passengers.Roles')->findBySlug('guest')->first();
+                if(!$role){
+                    $role = [
+                        'id' => 1,
+                        'title' => 'Guest',
+                        'slug' => 'guest',
+                        'admin' => false,
+                        'core' => true,
+                        'created' => null,
+                        'modified' => null,
+                        'user_count' => 0
+                    ];
+                } else {
+                    $role = $role->toArray();
+                }
+                $user = [
+                    'id' => '0',
+                    'role_id' => $role['id'],
+                    'username' => 'guest',
+                    'email' => 'me@guest.tld',
+                    'active' => 1,
+                    'role' => $role
+                ];
+                $controller->Auth->setUser($user);
+            }
+        }
     }
 
 }

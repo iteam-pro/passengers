@@ -35,4 +35,16 @@ $config = [
             ]
         ],
     ],
+    [
+        'path' => 'App.force_user_auth',
+        'title' => 'Always force User authentication',
+        'default' => '0',
+        'options' => [
+            "type" => "radio",
+            "options" => [
+                "1" => "Yes",
+                "0" => "No"
+            ]
+        ],
+    ],
 ];

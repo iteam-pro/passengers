@@ -34,3 +34,26 @@ EventManager::instance()->attach(
 
 //Manage for admin registration
 Configure::write('Passengers.admin.registration.enable', true);
+
+//Configureing recommended simple TinyAuth plugin. It should loaded later by Event if plugin injected project by composer
+//To use this plugin you need to create acl.ini file in your app config dir
+Configure::write('Passengers.authorizers.Tiny', [
+    'className' => 'TinyAuth.Tiny',
+    'roleColumn' => 'role_id', // Foreign key for the Role ID in users table or in pivot table
+    'aliasColumn' => 'slug', // Name of column in roles table holding role alias/slug
+    'rolesTable' => 'Passengers.Roles', // name of Configure key holding available roles OR class name of roles table
+    'usersTable' => 'Passengers.Users', // name of the Users table
+    'superAdminRole' => 4, // id of super admin role, which grants access to ALL resources
+    'autoClearCache' => Configure::read('debug')
+]);
+
+/*
+//Removed from event but require special config
+if(Plugin::loaded('Acl')&&file_exists(CONFIG.'acl.php')){
+    $controller->loadComponent('Acl.Acl');
+    $controller->Acl->config('PhpAcl');
+    $authorizeConfig['Acl.Actions'] = [
+        'userModel' => 'Passengers.Users'
+    ];
+}
+*/
