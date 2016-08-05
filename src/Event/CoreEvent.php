@@ -83,9 +83,7 @@ class CoreEvent implements EventListenerInterface {
 				],
 		    ],
 	    ]);
-        $authorizeConfig = [
-            AuthComponent::ALL => ['actionPath' => 'controllers/'],
-        ];
+        $authorizeConfig = [];
         if($authorizers = Configure::read('Passengers.authorizers')){
             foreach($authorizers as $key=>$authorizer){
                 if(isset($authorizer['className'])&&($plugin = pluginSplit($authorizer['className'])[0])){
@@ -133,6 +131,7 @@ class CoreEvent implements EventListenerInterface {
         $forceAuth = Configure::read('App.force_user_auth');
         //if authentication forced just skip guest user session and redirect to signin page
         if(!$forceAuth&&!$request->session()->read('Auth.User')){
+            //exit();
             //if authentication not forced check prefix. Usually only requests without prefixes allow guests
             if(!isset($request->params['prefix'])||empty($request->params['prefix'])){
                 $role = TableRegistry::get('Passengers.Roles')->findBySlug('guest')->first();
