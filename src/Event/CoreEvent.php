@@ -19,6 +19,10 @@ use Cake\Core\Plugin;
 use Cake\ORM\Association;
 use Cake\ORM\Tableregistry;
 
+if (!defined('USER_ROLE_KEY')) {
+	define('USER_ROLE_KEY', 'role');
+}
+
 class CoreEvent implements EventListenerInterface {
 
     public function implementedEvents()
@@ -100,6 +104,8 @@ class CoreEvent implements EventListenerInterface {
         }
         $controller->Auth->config('authorize', array(AuthComponent::ALL => ['actionPath' => 'controllers/'])+$authorizeConfig);
         $this->_setDefaultUser($controller);
+        $controller->loadComponent('Passengers.AuthUser');
+        $controller->viewBuilder()->helpers(['Passengers.AuthUser']);
     }
 
     public function onAuthIdentify(Event $event)
