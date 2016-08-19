@@ -75,16 +75,10 @@ class CoreEvent implements EventListenerInterface {
                         'password' => 'password'
                     ],
                     'userModel' => 'Passengers.Users',
-                    'scope' => ['Users.active' => 1],
+					'finder' => 'active'
                 ],
-                'FOC/Authenticate.Cookie',
-                'FOC/Authenticate.MultiColumn' => [
-					'columns' => ['username', 'email'],
-					'passwordHasher' => [
-						'className' => 'Default',
-						'hashers' => ['Default']
-					]
-				],
+				'Form',
+				'Passengers.Cookie',
 		    ],
 	    ]);
         $authorizeConfig = [];
@@ -103,7 +97,8 @@ class CoreEvent implements EventListenerInterface {
             $authorizeConfig[] = 'Controller';
         }
         $controller->Auth->config('authorize', array(AuthComponent::ALL => ['actionPath' => 'controllers/'])+$authorizeConfig);
-        $this->_setDefaultUser($controller);
+
+        $this->_setUser($controller);
         $controller->loadComponent('Passengers.AuthUser');
         $controller->viewBuilder()->helpers(['Passengers.AuthUser']);
     }
@@ -132,12 +127,22 @@ class CoreEvent implements EventListenerInterface {
         return $user;
     }
 
-    protected function _setDefaultUser($controller){
+    protected function _setUser($controller){
         $request = $controller->request;
+
+		//force user identification if cookies rememberMe found
+		if (!$controller->Auth->user() && $controller->Cookie->read(Configure::read('Passengers.rememberMe.cookieName'))) {
+	        $user = $controller->Auth->identify();
+	        if ($user) {
+	            $controller->Auth->setUser($user);
+	        } else {
+	            $controller->Cookie->delete(Configure::read('Passengers.rememberMe.cookieName'));
+	        }
+	    }
+
         $forceAuth = Configure::read('App.force_user_auth');
         //if authentication forced just skip guest user session and redirect to signin page
         if(!$forceAuth&&!$request->session()->read('Auth.User')){
-            //exit();
             //if authentication not forced check prefix. Usually only requests without prefixes allow guests
             if(!isset($request->params['prefix'])||empty($request->params['prefix'])){
                 $role = TableRegistry::get('Passengers.Roles')->findBySlug('guest')->first();

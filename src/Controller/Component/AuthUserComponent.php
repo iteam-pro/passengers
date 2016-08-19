@@ -19,7 +19,6 @@ class AuthUserComponent extends Component {
 	 */
 	protected function _getUser() {
         $controller = $this->_registry->getController();
-        debug($controller->request->session()->read('Auth.User'));
 		return (array)$controller->request->session()->read('Auth.User');
 	}
 

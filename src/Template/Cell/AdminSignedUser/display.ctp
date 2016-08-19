@@ -11,7 +11,6 @@
 */
 $this->loadHelper('RearEngine.AdminMenu');
 $this->loadHelper('Tools.Gravatar', ['default' => 'mm', 'ext' => 'png']);
-//debug($user);
 ?>
 <li class="dropdown">
     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">

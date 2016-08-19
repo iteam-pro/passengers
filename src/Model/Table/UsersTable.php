@@ -10,12 +10,12 @@ use Cake\Validation\Validator;
  */
 class UsersTable extends Table {
 
-/**
- * Initialize method
- *
- * @param array $config The configuration for the Table.
- * @return void
- */
+    /**
+     * Initialize method
+     *
+     * @param array $config The configuration for the Table.
+     * @return void
+     */
 	public function initialize(array $config) {
 		$this->table('passengers_users');
 		$this->displayField('username');
@@ -33,12 +33,12 @@ class UsersTable extends Table {
 
 	}
 
-/**
- * Default validation rules.
- *
- * @param \Cake\Validation\Validator $validator
- * @return \Cake\Validation\Validator
- */
+    /**
+     * Default validation rules.
+     *
+     * @param \Cake\Validation\Validator $validator
+     * @return \Cake\Validation\Validator
+     */
 	public function validationDefault(Validator $validator) {
 		$validator
 			->add('id', 'valid', ['rule' => 'numeric'])
@@ -65,4 +65,21 @@ class UsersTable extends Table {
 		return $validator;
 	}
 
+    /**
+     * Custom finder to filter active users
+     *
+     * @param Query $query Query object to modify
+     * @param array $options Query options
+     * @return Query
+     */
+    public function findActive(Query $query, array $options = [])
+    {
+        $query
+            ->where(['OR' =>[
+                $this->aliasField('username') => $options['username'],
+                $this->aliasField('email') => $options['username'],
+            ]], [], true)
+            ->where([$this->aliasField('active') => 1]);
+        return $query;
+    }
 }

@@ -161,8 +161,7 @@ class UsersController extends AppController {
  */
 	public function signin() {
 	    if ($this->request->is('post')) {
-	        $user = $this->Auth->identify();
-	        if ($user) {
+	        if ($user = $this->Auth->identify()) {
 	            $this->Auth->setUser($user);
 				$this->_setCookie();
 	            return $this->redirect($this->Auth->redirectUrl());
@@ -218,14 +217,15 @@ class UsersController extends AppController {
 	}
 
 	protected function _setCookie() {
-		if (!$this->request->data('remember_me')) {
-			return false;
+		if($this->request->data('remember_me')) {
+		    $this->Cookie->configKey(Configure::read('Passengers.rememberMe.cookieName'), [
+		        'expires' => '+1 month',
+		        'httpOnly' => true
+		    ]);
+		    $this->Cookie->write(Configure::read('Passengers.rememberMe.cookieName'), [
+		        'username' => $this->request->data('username'),
+		        'password' => $this->request->data('password')
+		    ]);
 		}
-		$data = [
-			'username' => $this->request->data('username'),
-			'password' => $this->request->data('password')
-		];
-		$this->Cookie->write('RememberMe', $data, true, '+1 week');
-		return true;
 	}
 }

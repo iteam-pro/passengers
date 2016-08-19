@@ -10,12 +10,12 @@ use Cake\Validation\Validator;
  */
 class RolesTable extends Table {
 
-/**
- * Initialize method
- *
- * @param array $config The configuration for the Table.
- * @return void
- */
+    /**
+     * Initialize method
+     *
+     * @param array $config The configuration for the Table.
+     * @return void
+     */
 	public function initialize(array $config) {
 		$this->table('passengers_roles');
 		$this->displayField('title');
@@ -32,12 +32,12 @@ class RolesTable extends Table {
 		]);
 	}
 
-/**
- * Default validation rules.
- *
- * @param \Cake\Validation\Validator $validator
- * @return \Cake\Validation\Validator
- */
+    /**
+     * Default validation rules.
+     *
+     * @param \Cake\Validation\Validator $validator
+     * @return \Cake\Validation\Validator
+     */
 	public function validationDefault(Validator $validator) {
 		$validator
 			->add('id', 'valid', ['rule' => 'numeric'])
@@ -53,5 +53,4 @@ class RolesTable extends Table {
 
 		return $validator;
 	}
-
 }

@@ -107,8 +107,7 @@ class UsersController extends AppController {
 				$this->Flash->error($event->result);
 				$this->redirect(['action' => 'signin']);
 			}
-			$user = $this->Auth->identify();
-			if ($user) {
+			if ($user = $this->Auth->identify()) {
 				$this->Auth->setUser($user);
 				$this->_setCookie();
 				$event = $this->dispatchEvent('Controller.Users.afterSignIn');
@@ -161,7 +160,7 @@ class UsersController extends AppController {
 					'subject' => __('Registration confirmation'),
 					'template' => 'Passengers.signup'
 				]);
-                                $this->dispatchEvent('Controller.Users.afterSignUp', [$user]);
+                $this->dispatchEvent('Controller.Users.afterSignUp', [$user]);
 				$this->Flash->success(__d('passengers', 'Your account has been created.'));
 				return $this->redirect(['action' => 'signin']);
 			} else {
@@ -205,7 +204,7 @@ class UsersController extends AppController {
                     'Users.email' => $this->request->data('email'),
                 ]
             ])->first();
-            
+
             if ($user) {
                 $password = (new ComputerPasswordGenerator())
                     ->setOptionValue(ComputerPasswordGenerator::OPTION_UPPER_CASE, true)
@@ -213,7 +212,7 @@ class UsersController extends AppController {
                     ->setOptionValue(ComputerPasswordGenerator::OPTION_NUMBERS, true)
                     ->setOptionValue(ComputerPasswordGenerator::OPTION_SYMBOLS, false)
                     ->generatePassword();
-                
+
                 $this->Users->addBehavior('Tools.Passwordable', [
                     'confirm' => false,
                 ]);
@@ -230,7 +229,7 @@ class UsersController extends AppController {
                     $this->Flash->error('The password could not be reseted. Please, try again.');
                 }
             }
-            
+
             $this->Flash->warning(__d('passengers', 'If the email you specified exists in our system, we\'ve sent a new password to it.'));
             return $this->redirect(['action' => 'signin']);
         }
@@ -250,7 +249,7 @@ class UsersController extends AppController {
                     'formField' => 'password_new',
                     'formFieldRepeat' => 'password_confirm',
                 ]);
-                
+
                 $user = $this->Users->patchEntity($user, $this->request->data);
                 if ($this->Users->save($user)) {
                     $this->Flash->success('The password has been changed.');
@@ -260,21 +259,22 @@ class UsersController extends AppController {
                     return $this->redirect(['action' => 'password']);
                 }
             }
-            
+
             $this->Flash->error('Error. The password could not be changed. Please, try again.');
             return $this->redirect(['action' => 'password']);
         }
     }
 
 	protected function _setCookie() {
-		if (!$this->request->data('remember_me')) {
-			return false;
+		if($this->request->data('remember_me')) {
+		    $this->Cookie->configKey(Configure::read('Passengers.rememberMe.cookieName'), [
+		        'expires' => '+1 month',
+		        'httpOnly' => true
+		    ]);
+		    $this->Cookie->write(Configure::read('Passengers.rememberMe.cookieName'), [
+		        'username' => $this->request->data('username'),
+		        'password' => $this->request->data('password')
+		    ]);
 		}
-		$data = [
-			'username' => $this->request->data('username'),
-			'password' => $this->request->data('password')
-		];
-		$this->Cookie->write('RememberMe', $data, true, '+1 week');
-		return true;
 	}
 }
