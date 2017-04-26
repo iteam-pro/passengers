@@ -47,12 +47,23 @@ class UsersTable extends Table {
 			->requirePresence('role_id', 'create')
 			->notEmpty('role_id')
 			->requirePresence('username', 'create')
-			->notEmpty('username')
-			->add('username', 'unique', ['rule' => 'validateUnique', 'provider' => 'table'])
-			->add('email', 'valid', ['rule' => 'email'])
+			->notEmpty('username', 'Username need to be at least 6 characters long')
+			->add('username', 'unique', [
+                'rule' => 'validateUnique',
+                'provider' => 'table',
+                'message' => 'Username need to be at least 6 characters long',
+            ])
+			->add('email', 'valid', [
+                'rule' => 'email',
+                'message' => 'Email field should contain valid email address',
+            ])
 			->requirePresence('email', 'create')
 			->notEmpty('email')
-			->add('email', 'unique', ['rule' => 'validateUnique', 'provider' => 'table'])
+			->add('email', 'unique', [
+                'rule' => 'validateUnique',
+                'provider' => 'table',
+                'message' => 'User with this email already registered',
+            ])
 			->add('active', 'valid', ['rule' => 'boolean'])
 			->requirePresence('active', 'create')
 			->notEmpty('active')

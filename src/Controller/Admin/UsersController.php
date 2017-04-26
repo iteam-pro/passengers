@@ -77,7 +77,7 @@ class UsersController extends AppController {
  * @return void
  */
 	public function add() {
-		$this->Users->addBehavior('Tools.Passwordable', [
+		$this->Users->addBehavior('Passengers.Passwordable', [
 			'formField' => 'password_new',
 			'formFieldRepeat' => 'password_confirm',
 			'formFieldCurrent' => 'password_current',
@@ -117,7 +117,7 @@ class UsersController extends AppController {
 			'contain' => []
 		]);
 		if ($this->request->is(['patch', 'post', 'put'])) {
-			$this->Users->addBehavior('Tools.Passwordable', [
+			$this->Users->addBehavior('Passengers.Passwordable', [
 				'require' => false,
 				'formField' => 'password_new',
 				'formFieldRepeat' => 'password_confirm',
@@ -144,7 +144,7 @@ class UsersController extends AppController {
  */
 	public function delete($id = null) {
 		$user = $this->Users->get($id);
-		$this->request->allowMethod('post', 'delete');
+		$this->request->allowMethod('get', 'post', 'delete');
 		if ($this->Users->delete($user)) {
 			$this->Flash->success('The user has been deleted.');
 		} else {
@@ -192,7 +192,7 @@ class UsersController extends AppController {
 			$this->Flash->error(__d('passengers', 'Registration is disabled. Please contact with resourse administration'));
 			return $this->redirect(['action' => 'signin']);
 		}
-		$this->Users->addBehavior('Tools.Passwordable', [
+		$this->Users->addBehavior('Passengers.Passwordable', [
 			'formField' => 'password_new',
 			'formFieldRepeat' => 'password_confirm',
 			'formFieldCurrent' => 'password_current',

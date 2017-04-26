@@ -139,7 +139,7 @@ class UsersController extends AppController {
 			$this->Flash->error(__d('passengers', 'Registration is disabled. Please contact with resourse administration'));
 			return $this->redirect(['action' => 'signin']);
 		}
-		$this->Users->addBehavior('Tools.Passwordable', [
+		$this->Users->addBehavior('Passengers.Passwordable', [
 			'formField' => 'password_new',
 			'formFieldRepeat' => 'password_confirm',
 			'formFieldCurrent' => 'password_current',
@@ -164,7 +164,9 @@ class UsersController extends AppController {
 				$this->Flash->success(__d('passengers', 'Your account has been created.'));
 				return $this->redirect(['action' => 'signin']);
 			} else {
-				$this->Flash->error(__d('passengers', 'Your account could not be created. Please, try again or contact with resoure administration.'));
+                foreach($user->errors() as $field=>$error){
+                    $this->Flash->error(__d('passengers', implode(" ", $error)));
+                }
 			}
 			$user->unsetProperty('password_new');
 			$user->unsetProperty('password_confirm');
@@ -213,7 +215,7 @@ class UsersController extends AppController {
                     ->setOptionValue(ComputerPasswordGenerator::OPTION_SYMBOLS, false)
                     ->generatePassword();
 
-                $this->Users->addBehavior('Tools.Passwordable', [
+                $this->Users->addBehavior('Passengers.Passwordable', [
                     'confirm' => false,
                 ]);
                 $user = $this->Users->patchEntity($user, ['pwd' => $password]);
@@ -243,7 +245,7 @@ class UsersController extends AppController {
             )->first();
 
             if ((new DefaultPasswordHasher)->check($this->request->data('password_current'), $user->password)) {
-                $this->Users->addBehavior('Tools.Passwordable', [
+                $this->Users->addBehavior('Passengers.Passwordable', [
                     'current' => true,
                     'formFieldCurrent' => 'password_current',
                     'formField' => 'password_new',
