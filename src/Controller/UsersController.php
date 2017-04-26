@@ -77,24 +77,6 @@ class UsersController extends AppController {
 	}
 
 /**
- * Delete method
- *
- * @param string $id
- * @return void
- * @throws NotFoundException
- */
-	public function delete($id = null) {
-		$user = $this->Users->get($id);
-		$this->request->allowMethod('post', 'delete');
-		if ($this->Users->delete($user)) {
-			$this->Flash->success('The user has been deleted.');
-		} else {
-			$this->Flash->error('The user could not be deleted. Please, try again.');
-		}
-		return $this->redirect(['action' => 'index']);
-	}
-
-/**
  * SignIn method
  *
  * @return void
