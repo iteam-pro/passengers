@@ -20,7 +20,7 @@ use Cake\ORM\Association;
 use Cake\ORM\Tableregistry;
 
 if (!defined('USER_ROLE_KEY')) {
-	define('USER_ROLE_KEY', 'role');
+    define('USER_ROLE_KEY', 'role');
 }
 
 class CoreEvent implements EventListenerInterface {
@@ -28,7 +28,7 @@ class CoreEvent implements EventListenerInterface {
     public function implementedEvents()
     {
         return array(
-	        'Controller.initialize' => array(
+            'Controller.initialize' => array(
                 'callable' => 'onControllerInit',
                 'priority' => 2
             ),
@@ -42,9 +42,9 @@ class CoreEvent implements EventListenerInterface {
     {
         $controller = $event->subject();
 
-		//Skip Auth for non app controllers. DebugKit For example
+        //Skip Auth for non app controllers. DebugKit For example
         //possible injection hole, but needed.
-	    if(!in_array('App\Controller\AppController', class_parents($controller))) return;
+        if(!in_array('App\Controller\AppController', class_parents($controller))) return;
 
         $controller->loadComponent('Cookie');
         $loginRedirect = '/';
@@ -68,19 +68,20 @@ class CoreEvent implements EventListenerInterface {
                 'controller' => 'Users',
                 'action' => 'signin',
             ],
-		    'authenticate' => [
-			    AuthComponent::ALL => [
+            'authenticate' => [
+                AuthComponent::ALL => [
                     'fields' => [
                         'username' => 'username',
                         'password' => 'password'
                     ],
                     'userModel' => 'Passengers.Users',
-					'finder' => 'active'
+                    'finder' => 'active'
                 ],
-				'Form',
-				'Passengers.Cookie',
-		    ],
-	    ]);
+            ]
+        ]);
+
+        $controller->Auth->config('authenticate', Configure::read('Passengers.authenticate'));
+
         $authorizeConfig = [];
         if($authorizers = Configure::read('Passengers.authorizers')){
             foreach($authorizers as $key=>$authorizer){
@@ -130,15 +131,15 @@ class CoreEvent implements EventListenerInterface {
     protected function _setUser($controller){
         $request = $controller->request;
 
-		//force user identification if cookies rememberMe found
-		if (!$controller->Auth->user() && $controller->Cookie->read(Configure::read('Passengers.rememberMe.cookieName'))) {
-	        $user = $controller->Auth->identify();
-	        if ($user) {
-	            $controller->Auth->setUser($user);
-	        } else {
-	            $controller->Cookie->delete(Configure::read('Passengers.rememberMe.cookieName'));
-	        }
-	    }
+        //force user identification if cookies rememberMe found
+        if (!$controller->Auth->user() && $controller->Cookie->read(Configure::read('Passengers.rememberMe.cookieName'))) {
+            $user = $controller->Auth->identify();
+            if ($user) {
+                $controller->Auth->setUser($user);
+            } else {
+                $controller->Cookie->delete(Configure::read('Passengers.rememberMe.cookieName'));
+            }
+        }
 
         $forceAuth = Configure::read('App.force_user_auth');
         //if authentication forced just skip guest user session and redirect to signin page

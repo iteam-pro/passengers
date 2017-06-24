@@ -37,6 +37,12 @@ Configure::write('Passengers.admin.registration.enable', true);
 
 Configure::write('Passengers.rememberMe.cookieName', 'RememberMe');
 
+Configure::write('Passengers.authenticate', [
+    'Form',
+    'Passengers.Cookie',
+]);
+
+
 //Configureing recommended simple TinyAuth plugin. It should loaded later by Event if plugin injected project by composer
 //To use this plugin you need to create acl.ini file in your app config dir
 Configure::write('Passengers.authorizers.Tiny', [
