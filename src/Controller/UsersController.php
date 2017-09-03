@@ -126,15 +126,25 @@ class UsersController extends AppController {
 			'formFieldRepeat' => 'password_confirm',
 			'formFieldCurrent' => 'password_current',
 		]);
-		$user = $this->Users->newEntity($this->request->data);
+        $user = $this->Users->newEntity();
 		if ($this->request->is('post')&&$signupAllowed) {
-			//TODO: make it configurable
-			$user->role_id = 2;
-			$user->active = 1;
+            $user = $this->Users->patchEntity($user, $this->request->data);
+            //TODO: make it configurable
+            $user->role_id = 2;
+            $user->active = 1;
+            foreach($user->errors() as $field=>$error){
+                $this->Flash->error(__d('passengers', implode("\n", $error)));
+                return;
+            }
 			if(Configure::read('App.use_users_activation')){
 				$user->active = 1;
 				$user->activation_code = md5(time().$_data['password_new']);
 			}
+            $event = $this->dispatchEvent('Controller.Users.beforeSignUp', [$user]);
+            if ($event->isStopped()) {
+                $this->Flash->error($event->result);
+                return;
+            }
 			$rememberPass = $user->password_new;
 			if ($this->Users->save($user)) {
 				$user->password = $rememberPass;
