@@ -31,7 +31,9 @@ class SignInEvent implements EventListenerInterface {
             if ($controller->request->data('email'))
                 $userName = $controller->request->data('email');
             if($userName) {
-                $active = $controller->Users->find('all', [
+                $usersTable = TableRegistry::get('Passengers.Users');
+                //$active = $controller->Users->find('all', [
+                $active = $usersTable->find('all', [
                     'conditions' => [
                         'Users.active' => true,
                         'OR' => [
