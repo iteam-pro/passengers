@@ -14,6 +14,7 @@ namespace Passengers\Controller\Admin;
 use Passengers\Controller\AppController;
 use Cake\Event\Event;
 use Cake\Core\Configure;
+use Cake\Mailer\MailerAwareTrait;
 
 /**
  * Users Controller
@@ -21,6 +22,8 @@ use Cake\Core\Configure;
  * @property Passengers\Model\Table\UsersTable $Users
  */
 class UsersController extends AppController {
+
+    use MailerAwareTrait;
 
     public $helpers = [
         'PlumSearch.Search'
@@ -88,10 +91,12 @@ class UsersController extends AppController {
 			if ($this->Users->save($user)) {
                 if($sendEmail = $this->request->data('send_registration_email')){
                     $user->password = $rememberPass;
-                    $this->Email->send($user->email, ['user' => $user], [
-                        'subject' => __('Registration confirmation'),
-                        'template' => 'Passengers.signup'
-                    ]);
+                    $this->getMailer('Passengers.User')->send('signUp', [$user]);
+                    //Old Deprecated way
+                    //$this->Email->send($user->email, ['user' => $user], [
+                    //    'subject' => __('Registration confirmation'),
+                    //    'template' => 'Passengers.signup'
+                    //]);
                 }
                 $this->Flash->success('The user has been saved.');
 				return $this->redirect(['action' => 'index']);

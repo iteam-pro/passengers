@@ -148,10 +148,11 @@ class UsersController extends AppController {
 			$rememberPass = $user->password_new;
 			if ($this->Users->save($user)) {
 				$user->password = $rememberPass;
-				$this->Email->send($user->email, ['user' => $user], [
-					'subject' => __('Registration confirmation'),
-					'template' => 'Passengers.signup'
-				]);
+                //Deprecated! Email sending moved to event afterSignUp
+                //$this->Email->send($user->email, ['user' => $user], [
+				//	'subject' => __('Registration confirmation'),
+				//	'template' => 'Passengers.signup'
+				//]);
                 $this->dispatchEvent('Controller.Users.afterSignUp', [$user]);
 				$this->Flash->success(__d('passengers', 'Your account has been created.'));
 				return $this->redirect(['action' => 'signin']);
@@ -213,10 +214,12 @@ class UsersController extends AppController {
                 $user = $this->Users->patchEntity($user, ['pwd' => $password]);
                 if ($this->Users->save($user)) {
                     $user->password = $password;
-                    $this->Email->send($user->email, ['user' => $user], [
-                        'subject' => __('Reset password'),
-                        'template' => 'Passengers.reset'
-                    ]);
+                    //Deprecated. Old way to send reset email
+                    //$this->Email->send($user->email, ['user' => $user], [
+                    //    'subject' => __('Reset password'),
+                    //    'template' => 'Passengers.reset'
+                    //]);
+                    $this->getMailer('Passengers.User')->send('resetPassword', [$user]);
                     $this->Flash->success('Please check email for new password.');
                     return $this->redirect(['action' => 'signin']);
                 } else {
