@@ -24,7 +24,7 @@
         "mindforce/cakephp-rear-engine": "*",
         "dereuromark/cakephp-tools": "~1.5",
         "xety/cake3-cookieauth": "~1.4",
-        "jeremyharris/cakephp-lazyload": "~2.0.*"
+        "jeremyharris/cakephp-lazyload": "~2.0.3"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "*"
