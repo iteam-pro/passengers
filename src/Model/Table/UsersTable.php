@@ -40,19 +40,25 @@ class UsersTable extends Table {
      * @return \Cake\Validation\Validator
      */
 	public function validationDefault(Validator $validator) {
-		$validator
+        $validator
 			->add('id', 'valid', ['rule' => 'numeric'])
-			->allowEmpty('id', 'create')
+            ->allowEmpty('id', 'create');
+
+        $validator
 			->add('role_id', 'valid', ['rule' => 'numeric'])
 			->requirePresence('role_id', 'create')
-			->notEmpty('role_id')
+            ->notEmpty('role_id');
+
+        $validator
 			->requirePresence('username', 'create')
 			->notEmpty('username', 'Username need to be at least 6 characters long')
 			->add('username', 'unique', [
                 'rule' => 'validateUnique',
                 'provider' => 'table',
                 'message' => 'Username need to be at least 6 characters long',
-            ])
+            ]);
+
+        $validator
 			->add('email', 'valid', [
                 'rule' => 'email',
                 'message' => 'Email field should contain valid email address',
@@ -63,17 +69,24 @@ class UsersTable extends Table {
                 'rule' => 'validateUnique',
                 'provider' => 'table',
                 'message' => 'User with this email already registered',
-            ])
+            ]);
+
+        $validator
 			->add('active', 'valid', ['rule' => 'boolean'])
 			->requirePresence('active', 'create')
-			->notEmpty('active')
-			->allowEmpty('activation_code')
+            ->notEmpty('active');
+
+        $validator
+            ->allowEmpty('activation_code');
+
+        $validator
 			->add('update_required', 'valid', ['rule' => 'boolean'])
-			->allowEmpty('update_required')
-			->allowEmpty('profile')
+            ->allowEmpty('update_required');
+
+        $validator
 			->allowEmpty('options');
 
-		return $validator;
+        return $validator;
 	}
 
     /**

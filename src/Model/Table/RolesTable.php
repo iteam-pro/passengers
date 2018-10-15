@@ -39,15 +39,19 @@ class RolesTable extends Table {
      * @return \Cake\Validation\Validator
      */
 	public function validationDefault(Validator $validator) {
-		$validator
-			->add('id', 'valid', ['rule' => 'numeric'])
-			->allowEmpty('id', 'create')
+        $validator
+            ->add('id', 'valid', ['rule' => 'numeric'])
+            ->allowEmpty('id', 'create');
+
+        $validator
 			->requirePresence('title', 'create')
-			->notEmpty('title')
-			//->validatePresence('slug', 'create')
-			//->notEmpty('title')
-			->add('admin', 'valid', ['rule' => 'boolean'])
-			->allowEmpty('admin')
+			->notEmpty('title');
+
+        $validator
+            ->add('admin', 'valid', ['rule' => 'boolean'])
+			->allowEmpty('admin');
+
+        $validator
 			->add('core', 'valid', ['rule' => 'boolean'])
 			->allowEmpty('core');
 
