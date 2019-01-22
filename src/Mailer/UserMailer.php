@@ -25,7 +25,7 @@ class UserMailer extends Mailer
     public function signUp($user)
     {
         return $this->to($user->email)
-            ->subject(__('Registration confirmation'))
+            ->subject(__('Thank you for registration'))
             ->template('Passengers.signup')
             ->emailFormat('both')
             ->set(["user" => $user]);
@@ -34,7 +34,7 @@ class UserMailer extends Mailer
     public function resetPassword($user)
     {
         return $this->to($user->email)
-            ->subject(__('Reset password'))
+            ->subject(__('Password reset notification'))
             ->template('Passengers.reset')
             ->emailFormat('both')
             ->set(['user' => $user]);
