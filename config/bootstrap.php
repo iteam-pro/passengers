@@ -21,26 +21,18 @@ use Cake\Core\Plugin;
 //]);
 Plugin::load('RearEngine', ['bootstrap' => true, 'routes' => true]);
 
-//Attach CoreEvent to wrap Acl And Auth into App
-EventManager::instance()->attach(
-    new Passengers\Event\CoreEvent,
-    null
-);
-
-EventManager::instance()->attach(
-    new Passengers\Event\SignInEvent,
-    null
-);
-
 //Manage for admin registration
 Configure::write('Passengers.admin.registration.enable', true);
 
 Configure::write('Passengers.rememberMe.cookieName', 'RememberMe');
 
-Configure::write('Passengers.authenticate', [
-    'Form',
-    'Passengers.Cookie',
-]);
+Configure::write('Passengers.authenticate', array_unique(array_merge(
+    Configure::read('Passengers.authenticate', ['Form']),
+    [
+        'Form',
+        'Passengers.Cookie',
+    ]
+)));
 
 
 //Configureing recommended simple TinyAuth plugin. It should loaded later by Event if plugin injected project by composer
@@ -55,13 +47,14 @@ Configure::write('Passengers.authorizers.Tiny', [
     'autoClearCache' => Configure::read('debug')
 ]);
 
-/*
-//Removed from event but require special config
-if(Plugin::loaded('Acl')&&file_exists(CONFIG.'acl.php')){
-    $controller->loadComponent('Acl.Acl');
-    $controller->Acl->config('PhpAcl');
-    $authorizeConfig['Acl.Actions'] = [
-        'userModel' => 'Passengers.Users'
-    ];
-}
-*/
+//Attach CoreEvent to wrap Acl And Auth into App
+EventManager::instance()->attach(
+    new Passengers\Event\CoreEvent,
+    null
+);
+
+EventManager::instance()->attach(
+    new Passengers\Event\SignInEvent,
+    null
+);
+

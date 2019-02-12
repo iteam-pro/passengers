@@ -18,13 +18,12 @@
 	"minimum-stability": "dev",
 	"require": {
         "php": ">=5.6",
-        "cakephp/plugin-installer": "*",
-        "cakephp/cakephp": "~3.2",
+        "cakephp/cakephp": "3.7.*",
         "cakephp/migrations": "*",
         "mindforce/cakephp-rear-engine": "*",
-        "dereuromark/cakephp-tools": "~1.5",
+        "dereuromark/cakephp-tools": "^1.9",
         "xety/cake3-cookieauth": "~1.4",
-        "jeremyharris/cakephp-lazyload": "~2.0.3"
+        "jeremyharris/cakephp-lazyload": "^2.1.0"
 	},
 	"require-dev": {
 		"phpunit/phpunit": "*"

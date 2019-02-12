@@ -17,19 +17,18 @@ class UsersTable extends Table {
      * @return void
      */
 	public function initialize(array $config) {
-		$this->table('passengers_users');
-		$this->displayField('username');
-		$this->primaryKey('id');
-		$this->addBehavior('Timestamp');
+        $this->setTable('passengers_users');
+        $this->setDisplayField('username');
+        $this->setPrimaryKey('id');
+
+        $this->addBehavior('Timestamp');
 
 		$this->belongsTo('Roles', [
 			'foreignKey' => 'role_id',
 			'className' => 'Passengers.Roles',
 		]);
-		//$this->addBehavior('Search.Searchable');
-		$this->addBehavior('PlumSearch.Filterable');
-        $this->addFilter('username', ['className' => 'Like']);
-        $this->addFilter('role_id', ['className' => 'Value']);
+        //$this->addFilter('username', ['className' => 'Like']);
+        //$this->addFilter('role_id', ['className' => 'Value']);
 
 	}
 

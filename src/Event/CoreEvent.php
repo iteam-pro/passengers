@@ -40,7 +40,7 @@ class CoreEvent implements EventListenerInterface {
 
     public function onControllerInit(Event $event)
     {
-        $controller = $event->subject();
+        $controller = $event->getSubject();
 
         //Skip Auth for non app controllers. DebugKit For example
         //possible injection hole, but needed.
@@ -51,7 +51,7 @@ class CoreEvent implements EventListenerInterface {
         if(isset($controller->request->params['prefix'])){
             $loginRedirect .= $controller->request->params['prefix'];
         }
-        $controller->loadComponent('Auth', [
+        $authOptions = [
             'loginAction' => [
                 'plugin' => 'Passengers',
                 'controller' => 'Users',
@@ -78,9 +78,15 @@ class CoreEvent implements EventListenerInterface {
                     'finder' => 'active'
                 ],
             ]
-        ]);
-
-        $controller->Auth->config('authenticate', Configure::read('Passengers.authenticate'));
+        ];
+        if(isset($controller->Auth)){
+            foreach($authOptions as $key=>$options){
+                $controller->Auth->setConfig($key, $options);
+            }
+        } else {
+            $controller->loadComponent('Auth',$authOptions);
+        }
+        $controller->Auth->setConfig('authenticate', Configure::read('Passengers.authenticate'));
 
         $authorizeConfig = [];
         if($authorizers = Configure::read('Passengers.authorizers')){
@@ -97,19 +103,19 @@ class CoreEvent implements EventListenerInterface {
         if($forceAuth&&empty($authorizeConfig)){
             $authorizeConfig[] = 'Controller';
         }
-        $controller->Auth->config('authorize', array(AuthComponent::ALL => ['actionPath' => 'controllers/'])+$authorizeConfig);
+        $controller->Auth->setConfig('authorize', array(AuthComponent::ALL => ['actionPath' => 'controllers/'])+$authorizeConfig);
 
         $this->_setUser($controller);
     }
 
     public function onAuthIdentify(Event $event)
     {
-        $object = $event->subject();
+        $object = $event->getSubject();
         list($user, $auth) = $event->data;
         if(!isset($user['id'])){
             return;
         }
-        if($userModel = $auth->config('userModel')){
+        if($userModel = $auth->getConfig('userModel')){
             $userModel = TableRegistry::get($userModel);
             $contain = [];
             foreach($userModel->associations() as $association){

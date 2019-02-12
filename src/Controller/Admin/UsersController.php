@@ -25,24 +25,10 @@ class UsersController extends AppController {
 
     use MailerAwareTrait;
 
-    public $helpers = [
-        'PlumSearch.Search'
-    ];
-
     public function initialize() {
         parent::initialize();
         $this->loadComponent('Cookie');
 		$this->loadComponent('Platform.Email');
-        $this->loadComponent('PlumSearch.Filter', [
-            'parameters' => [
-                ['name' => 'username', 'className' => 'Input'],
-                [
-                    'name' => 'role_id',
-                    'className' => 'Select',
-                    'finder' => $this->Users->Roles->find('list'),
-                ]
-            ]
-        ]);
     }
 
 	public function beforeFilter(Event $event) {

@@ -22,7 +22,7 @@ class SignInEvent implements EventListenerInterface {
 
     public function beforeUsersControllerSignIn(Event $event)
     {
-        $controller = $event->subject();
+        $controller = $event->getSubject();
         $active = true;
         if($controller->request->is('post')){
             $userName = '';
